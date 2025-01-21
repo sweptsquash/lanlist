@@ -42,6 +42,7 @@ export default tseslint.config(
             'config/**/*',
             'database/**/*',
             'node_modules/**/*',
+            'old-site/**/*',
             'public/**/*',
             'routes/**/*',
             'storage/**/*',

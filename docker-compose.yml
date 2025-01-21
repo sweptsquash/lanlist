@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    lanlist.test:
         build:
             context: './docker/8.4'
             dockerfile: Dockerfile
