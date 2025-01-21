@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce168fa022759c0442a054d57a11b677",
+    "content-hash": "ef57a12c16adfaa399305be1eeae18a7",
     "packages": [
         {
             "name": "based/momentum-trail",
