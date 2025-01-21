@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class OrganiserJoinRequest extends Model
 {
+    /** @use HasFactory<\Database\Factories\OrganiserJoinRequestFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'organiser_id',
         'user_id',
