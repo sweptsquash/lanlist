@@ -30,20 +30,42 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-3. Next we'll need to build our docker image by running `./vendor/bin/sail build --no-cache`
+3. Next we'll need to build our docker image by running 
+```bash
+./vendor/bin/sail build --no-cache
+```
 
-4. Next we'll start our docker image by running `./vendor/bin/sail up -d` (To stop the docker image run `./vendor/bin/sail down`)
+4. Next we'll start our docker image by running 
+```bash
+./vendor/bin/sail up -d
+```
 
-5. Now we'll install our node packages `./vendor/bin/sail npm install` (you can do this normally if you have Node already installed `npm install`)
+To stop
+```bash
+./vendor/bin/sail down
+```
 
-6. Now lets migrate and seed our database with `./vendor/bin/sail artisan migrate:fresh --seed`
+5. Now we'll install our node packages 
+```bash
+./vendor/bin/sail npm install
+```
+Note: You can do this normally if you have Node already installed `npm install`
 
-7. Running Hot Module Reloaded instance of our frontend with `./vendor/bin/sail npm run dev` (or `npm run dev`)
+6. Now lets migrate and seed our database with 
+```bash
+./vendor/bin/sail artisan migrate:fresh --seed
+```
+
+7. Running Hot Module Reloaded instance of our frontend with 
+```bash
+./vendor/bin/sail npm run dev
+```
+Note: You can this normally if you have Node already installed `npm run dev`
 
 8. Navigate to `http://localhost:8000` in your browser
 
 ## NPM Scripts
-- `dev` - Run dev client/server
+- `dev` - Run HMR client/server
 - `build:dev` - Build development version of client and SSR
 - `build:prod` - Build production version of client and SSR
 - `lint` - Run linter and prettier checks and write changes
