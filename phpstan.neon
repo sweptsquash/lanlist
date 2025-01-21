@@ -1,8 +1,29 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
 parameters:
-	level: 1
-	paths:
-	  - public/
 
-	ignoreErrors:
-	  - '#value type specified in iterable type array#'
+    paths:
+        - app/
 
+    # Level 10 is the highest level
+    level: 5
+
+    scanFiles:
+      - _ide_helper_models.php
+
+    ignoreErrors:
+        -
+            message: '#Undefined variable: \$this#'
+            path: routes/console.php
+            reportUnmatched: false
+        -
+            message: '#Unsafe usage of new static\(\).#'
+            reportUnmatched: false
+        -
+            message: '#Access to an undefined property Laravel\\Socialite\\AbstractUser::\$[token|refreshToken]#'
+            reportUnmatched: false
+
+    excludePaths:
+        - old-site/*

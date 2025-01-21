@@ -1,0 +1,9 @@
+public/includes/config.php
+public/resources/images/organizer-logos
+public/resources/images/organizer-favicons
+/vendor/
+/scripts/*.ico
+*.swo
+*.swp
+uploads/
+composer.lock

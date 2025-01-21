@@ -1,21 +1,67 @@
-# lanlist.org
+# LanList
+A list of LAN Parties
 
-A list of LAN Parties.
+## Technologies Used
+- Node 22
+- PHP 8.4
+- Laravel 11
+- InertiaJS
+- VueJS 3.x
+- TailwindCSS 3.x
 
 ## Development
 
-This code was first created in approx 2013 or something like that. It's functional, just a bit of a sign of the times.
+Local development makes use of Docker Desktop through the use of Laravel Sail, before getting started with local development please ensure Docker Desktop is installed and open.
 
-`composer update` should be all you need to get things running, and a `includes/config.php` file.
+1. First we need to copy our environment files to do this we'll run the following commands:
 
-```php
-<?php
-
-define('DB_DSN', 'mysql:host=localhost;dbname=lanlist');
-define('DB_USER', 'lanlist');
-define('DB_PASS', 'sekrit');
-
-?>
+```bash
+cp .env.example .env && cp .env.testing.example .env.testing
 ```
 
-The database is provided in `schema.sql`.
+2. Next run the following command to install our vendor packages:
+
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php84-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+3. Next we'll need to build our docker image by running `./vendor/bin/sail build --no-cache`
+
+4. Next we'll start our docker image by running `./vendor/bin/sail up -d` (To stop the docker image run `./vendor/bin/sail down`)
+
+5. Now we'll install our node packages `./vendor/bin/sail npm install` (you can do this normally if you have Node already installed `npm install`)
+
+6. Now lets migrate and seed our database with `./vendor/bin/sail artisan migrate:fresh --seed`
+
+7. Running Hot Module Reloaded instance of our frontend with `./vendor/bin/sail npm run dev` (or `npm run dev`)
+
+8. Navigate to `http://localhost:8000` in your browser
+
+## NPM Scripts
+- `dev` - Run dev client/server
+- `build:dev` - Build development version of client and SSR
+- `build:prod` - Build production version of client and SSR
+- `lint` - Run linter and prettier checks and write changes
+- `test:lint` - Dry run of `lint` and output a list of warnings/errors
+- `tsc` - TypeScript Enforcement Check
+
+## Composer Commands:
+Automated Scripts
+- `update` will publish third-party assets and regenerate all ide-helpers
+- `install` will generate ziggy routes `resources/js/ziggy.js`
+- `lint` - Format PHP based to Laravel Standards.
+- `test:lint` - Dry run of `lint` output a list of warnings/errors.
+- `test` - Run tests in parallel with no coverage and ensure database is recreated
+- `doc:models` - [PHPDocs for models](https://github.com/barryvdh/laravel-ide-helper#automatic-PHPDocs-for-models) within `App/Models`
+- `analyse` - Analayse the code base using LaraStan
+
+## Artisan Commands:
+- `ide-helper:generate` - [PHPDoc generation for Laravel Facades](https://github.com/barryvdh/laravel-ide-helper#automatic-phpdoc-generation-for-laravel-facades) 
+- `ide-helper:meta` - [PhpStorm Meta file](https://github.com/barryvdh/laravel-ide-helper#phpstorm-meta-for-container-instances)
+
+**Note:** `ide-helper:generate` `ide-helper:meta` and `doc:models` are always executed on `composer update`.
