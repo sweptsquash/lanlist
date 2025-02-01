@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Media;
 use Illuminate\Support\Facades\Request;
 use Intervention\Image\Laravel\Facades\Image;

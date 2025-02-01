@@ -9,7 +9,6 @@ use App\Models\Organiser;
 use App\Models\User;
 use App\Models\Venue;
 use Carbon\Carbon;
-use DateInterval;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
