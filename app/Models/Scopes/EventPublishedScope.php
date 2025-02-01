@@ -13,6 +13,6 @@ class EventPublishedScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('is_published', true);
+        $builder->where('events.is_published', true);
     }
 }

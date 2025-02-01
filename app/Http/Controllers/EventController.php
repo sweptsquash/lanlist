@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\EventResource;
 use App\Models\Event;
+use App\Spatie\Sort\OrganiserTitleSort;
+use App\Spatie\Sort\VenueTitleSort;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -21,7 +24,12 @@ class EventController extends FrontendController
                 AllowedFilter::scope('start_between'),
                 AllowedFilter::operator('seats', FilterOperator::GREATER_THAN_OR_EQUAL),
             ])
-            ->allowedSorts('title', 'organiser.title', 'start_date', 'venue.title')
+            ->allowedSorts([
+                'title',
+                AllowedSort::custom('organiser.title', new OrganiserTitleSort, 'title'),
+                AllowedSort::custom('venue.title', new VenueTitleSort, 'title'),
+                'start_date',
+            ])
             ->defaultSort('-start_date')
             ->with([
                 'organiser:id,title,slug',

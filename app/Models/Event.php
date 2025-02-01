@@ -105,12 +105,12 @@ class Event extends Model
 
     public function scopeUpcoming(Builder $query): void
     {
-        $query->whereDate('start_date', '>=', today())
-            ->orderBy('start_date');
+        $query->whereDate('events.start_date', '>=', today())
+            ->orderBy('events.start_date');
     }
 
     public function scopeStartBetween(Builder $query, string $start, string $end): void
     {
-        $query->whereBetween('start_date', [$start, $end]);
+        $query->whereBetween('events.start_date', [$start, $end]);
     }
 }
