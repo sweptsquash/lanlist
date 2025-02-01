@@ -1,12 +1,14 @@
 @import '@vuepic/vue-datepicker/dist/main.css';
 @import 'leaflet/dist/leaflet.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@config "../../tailwind.config.mjs";
 
 body {
-    @apply bg-gray-50 dark:bg-gray-600;
+    @apply bg-gray-50 dark:bg-gray-900;
 }
 
 h1 {
@@ -33,8 +35,12 @@ h6 {
     @apply text-lg;
 }
 
+.link {
+    @apply text-indigo-400 hover:underline hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white;
+}
+
 [class*='btn-'] {
-    @apply rounded border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2;
+    @apply rounded border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer;
 }
 
 [class*='btn-']:disabled, [class*='btn-'].disabled, button:disabled {
@@ -44,3 +50,332 @@ h6 {
 .btn-primary {
     @apply bg-indigo-600 text-white hover:bg-indigo-700;
 }
+
+.btn-default {
+    @apply bg-white text-gray-700 hover:bg-gray-100 ring-1 ring-inset ring-gray-300 border-none focus:ring-offset-0;
+}
+
+.btn-group {
+    @apply isolate inline-flex;
+
+    & > [class*='btn-']:first-child {
+        @apply rounded-l rounded-r-none;
+    }
+
+    & > [class*='btn-']:not(:first-child):not(:last-child) {
+        @apply -ml-px rounded-none;
+    }
+
+    & > [class*='btn-']:last-child {
+        @apply -ml-px rounded-r rounded-l-none;
+    }
+}
+
+.leaflet-div-icon {
+    @apply p-1 rounded shadow relative border-black/25;
+}
+
+.leaflet-div-icon::before {
+    position:absolute;
+    content: '';
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 15px 10px 0 10px;
+    border-color: #000 transparent transparent transparent;
+    transform: rotate(0deg);
+    top: 100%;
+    left: 5px;
+}
+
+.leaflet-div-icon::after {
+    position:absolute;
+    content: '';
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 15px 10px 0 10px;
+    border-color: #FFF transparent transparent transparent;
+    transform: rotate(0deg);
+    top: 100%;
+    left: 5px;
+}
+
+.required::after {
+    content: '*';
+    @apply text-red-500;
+}
+
+.form-group {
+    @apply rounded border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500;
+}
+
+.form-group .form-input,
+.form-group [class*='btn-'] {
+    @apply border-0;
+}
+
+.form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+@layer utilities {
+    .form-input, .dp__input {
+        @apply block w-full appearance-none rounded-md border px-3 py-2 focus:outline-hidden
+        border-gray-300 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:text-gray-300 dark:hover:text-white dark:focus:text-white sm:text-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 read-only:cursor-not-allowed read-only:bg-gray-50;
+    }
+
+    .dp__input {
+        @apply pl-8;
+    }
+
+    .form-input.error {
+        @apply border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500;
+    }
+}
+
+label.error {
+    @apply text-red-600;
+}
+
+.input-hide-arrows {
+    -moz-appearance: textfield;
+}
+
+.input-hide-arrows::-webkit-outer-spin-button,
+.input-hide-arrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.dark {
+    & .dp__theme_light {
+        --dp-background-color: rgb(31 41 55);
+        --dp-text-color: rgb(209 213 219);
+        --dp-hover-color: rgb(31 41 55);
+        --dp-hover-text-color: rgb(255 255 255);
+        --dp-hover-icon-color: rgb(255 255 255);
+        --dp-primary-color: rgb(79 70 229);
+        --dp-primary-text-color: rgb(255 255 255);
+        --dp-secondary-color: #c0c4cc;
+        --dp-border-color: #ddd;
+        --dp-menu-border-color: #ddd;
+        --dp-border-color-hover: #aaaeb7;
+        --dp-disabled-color: #f6f6f6;
+        --dp-scroll-bar-background: #f3f3f3;
+        --dp-scroll-bar-color: #959595;
+        --dp-success-color: rgb(79 70 229);
+        --dp-success-color-disabled: #a3d9b1;
+        --dp-icon-color: #959595;
+        --dp-danger-color: #ff6f60;
+        --dp-highlight-color: rgba(25, 118, 210, 0.1);
+    }
+}
+
+/* Multiselect */
+.multiselect {
+  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer border border-gray-300 rounded-sm bg-white text-base leading-snug outline-hidden placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:text-gray-300 dark:hover:text-white dark:focus:text-white sm:text-sm;
+
+  &.is-disabled {
+    @apply bg-gray-50 cursor-not-allowed border-gray-200 text-gray-500;
+  }
+
+  &.is-open {
+    @apply rounded-b-none;
+  }
+
+  &.is-open-top {
+    @apply rounded-t-none;
+  }
+
+  &.is-active {
+    @apply border-indigo-500 ring-1 ring-inset ring-indigo-500 ring-offset-0;
+  }
+}
+
+.multiselect-wrapper {
+  @apply relative mx-auto w-full flex items-center justify-end box-border cursor-pointer outline-hidden;
+}
+
+.multiselect-single-label {
+  @apply flex items-center h-full max-w-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 pr-16 box-border rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
+}
+
+.multiselect-single-label-text {
+  @apply text-ellipsis overflow-hidden block whitespace-nowrap max-w-full;
+}
+
+.multiselect-multiple-label {
+  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
+}
+
+.multiselect-search {
+  @apply block w-full appearance-none rounded-md px-3 py-2 m-[2px] focus:outline-hidden
+    border-gray-300 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:text-gray-300 dark:hover:text-white dark:focus:text-white sm:text-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 read-only:cursor-not-allowed read-only:bg-gray-50  border-0 bg-transparent focus:ring-0;
+}
+
+.multiselect-tags {
+  @apply grow shrink flex flex-wrap items-center mt-1 pl-2 rtl:pl-0 rtl:pr-2;
+}
+
+.multiselect-tag {
+  @apply bg-indigo-500 text-white text-sm font-semibold py-0.5 pl-2 rounded-sm mr-1 mb-1 flex items-center whitespace-nowrap rtl:pl-0 rtl:pr-2 rtl:mr-0 rtl:ml-1;
+
+  &.is-disabled {
+    @apply pr-2 opacity-50 rtl:pl-2;
+  }
+}
+
+.multiselect-tag-remove {
+  @apply flex items-center justify-center p-1 mx-0.5 rounded-xs hover:bg-black/10;
+}
+
+.multiselect-tag-remove-icon {
+  @apply bg-multiselect-remove bg-center bg-no-repeat opacity-30 inline-block w-3 h-3;
+}
+
+.multiselect-tag-remove:hover .multiselect-tag-remove-icon {
+  @apply opacity-60;
+}
+
+.multiselect-tags-search-wrapper {
+  @apply inline-block relative mx-1 mb-1 grow shrink h-full;
+}
+
+.multiselect-tags-search {
+  @apply absolute inset-0 border-0 outline-hidden focus:ring-0 appearance-none p-0 text-base font-sans box-border w-full;
+}
+
+.multiselect-tags-search-copy {
+  @apply invisible whitespace-pre-wrap inline-block h-px;
+}
+
+.multiselect-placeholder {
+  @apply flex items-center h-full absolute left-0 top-0 pointer-events-none bg-transparent leading-snug pl-3.5 text-gray-400 rtl:left-auto rtl:right-0 rtl:pl-0 rtl:pr-3.5;
+}
+
+.multiselect-caret {
+  @apply bg-multiselect-caret bg-center bg-no-repeat w-2.5 h-4 py-px box-content mr-3.5 relative z-10 opacity-40 shrink-0 grow-0 transition-transform transform pointer-events-none rtl:mr-0 rtl:ml-3.5;
+
+  &.is-open {
+    @apply rotate-180 pointer-events-auto;
+  }
+}
+
+.multiselect-clear {
+  @apply pr-3.5 relative z-10 opacity-40 transition duration-300 shrink-0 grow-0 flex hover:opacity-80 rtl:pr-0 rtl:pl-3.5;
+}
+
+.multiselect-clear-icon {
+  @apply bg-multiselect-remove bg-center bg-no-repeat w-2.5 h-4 py-px box-content inline-block;
+}
+
+.multiselect-spinner {
+  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 mr-3.5 animate-spin shrink-0 grow-0 rtl:mr-0 rtl:ml-3.5;
+}
+
+.multiselect-inifite {
+  @apply flex items-center justify-center w-full;
+}
+
+.multiselect-inifite-spinner {
+  @apply bg-multiselect-spinner bg-center bg-no-repeat w-4 h-4 z-10 animate-spin shrink-0 grow-0 m-3.5;
+}
+
+.multiselect-dropdown {
+  @apply max-h-60 absolute -left-px -right-px bottom-0 transform translate-y-full border border-gray-300 -mt-px overflow-y-scroll z-50 bg-white dark:bg-gray-600 flex flex-col rounded-b;
+
+  &.is-top {
+    @apply -translate-y-full top-px bottom-auto rounded-b-none rounded-t;
+  }
+
+  &.is-hidden {
+    @apply hidden;
+  }
+}
+
+.multiselect-options {
+  @apply flex flex-col p-0 m-0 list-none;
+}
+
+.multiselect-group {
+  @apply p-0 m-0;
+}
+
+.multiselect-group-label {
+  @apply flex text-sm box-border items-center justify-start text-left py-1 px-3 font-semibold bg-gray-200 cursor-default leading-normal;
+
+  &.is-pointable {
+    @apply cursor-pointer;
+  }
+
+  &.is-pointed {
+    @apply bg-gray-300 text-gray-700;
+  }
+
+  &.is-selected {
+    @apply bg-indigo-600 text-white;
+  }
+
+  &.is-disabled {
+    @apply bg-gray-100 text-gray-300 cursor-not-allowed;
+  }
+
+  &.is-selected.is-pointed {
+    @apply bg-indigo-600 text-white opacity-90;
+  }
+
+  &.is-selected.is-disabled {
+    @apply text-indigo-100 bg-indigo-600/50 cursor-not-allowed;
+  }
+}
+
+.multiselect-group-options {
+  @apply p-0 m-0;
+}
+
+.multiselect-option {
+  @apply flex items-center justify-start box-border text-left cursor-pointer text-base leading-snug py-2 px-3;
+
+  &.is-pointed {
+    @apply text-gray-800 bg-gray-100 dark:bg-indigo-500/[0.6] dark:text-gray-300 dark:hover:text-white;
+  }
+
+  &.is-selected {
+    @apply text-white bg-indigo-500;
+  }
+
+  &.is-disabled {
+    @apply text-gray-300 cursor-not-allowed;
+  }
+
+  &.is-selected.is-pointed {
+    @apply text-white bg-indigo-500 opacity-90;
+  }
+
+  &.is-selected.is-disabled {
+    @apply text-indigo-100 bg-indigo-500/50 cursor-not-allowed;
+  }
+}
+
+.multiselect-no-options {
+  @apply py-2 px-3 text-gray-600 bg-white text-left rtl:text-right;
+}
+
+.multiselect-no-results {
+  @apply py-2 px-3 text-gray-600 bg-white text-left rtl:text-right;
+}
+
+.multiselect-fake-input {
+  @apply bg-transparent absolute left-0 right-0 -bottom-px w-full h-px border-0 p-0 appearance-none outline-hidden text-transparent;
+}
+
+.multiselect-assistive-text {
+  @apply absolute -m-px w-px h-px overflow-hidden;
+  clip: rect(0 0 0 0);
+}
+
+.multiselect-spacer {
+  @apply h-9 py-px box-content;
+}
+

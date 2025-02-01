@@ -7,6 +7,28 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Alert: typeof import('./../Components/Alert.vue')['default']
+    AppFooter: typeof import('./../Components/AppFooter.vue')['default']
     AppHead: typeof import('./../Components/AppHead.vue')['default']
+    AppNav: typeof import('./../Components/AppNav.vue')['default']
+    Avatar: typeof import('./../Components/Avatar.vue')['default']
+    Badge: typeof import('./../Components/Badge.vue')['default']
+    BaseInput: typeof import('./../Components/Input/BaseInput.vue')['default']
+    CheckBox: typeof import('./../Components/Input/CheckBox.vue')['default']
+    DateInput: typeof import('./../Components/Input/DateInput.vue')['default']
+    EmailInput: typeof import('./../Components/Input/EmailInput.vue')['default']
+    IconLoading: typeof import('./../Components/Icons/IconLoading.vue')['default']
+    InertiaHead: typeof import('@inertiajs/vue3')['Head']
+    InertiaLink: typeof import('@inertiajs/vue3')['Link']
+    Pagination: typeof import('./../Components/Pagination.vue')['default']
+    Panel: typeof import('./../Components/Panel.vue')['default']
+    PasswordInput: typeof import('./../Components/Input/PasswordInput.vue')['default']
+    SelectInput: typeof import('./../Components/Input/SelectInput.vue')['default']
+    SocialAuth: typeof import('./../Components/SocialAuth.vue')['default']
+    SortHeader: typeof import('./../Components/SortHeader.vue')['default']
+    TextareaInput: typeof import('./../Components/Input/TextareaInput.vue')['default']
+    TextInput: typeof import('./../Components/Input/TextInput.vue')['default']
+    ThemeToggle: typeof import('./../Components/ThemeToggle.vue')['default']
+    VerifyEmailBanner: typeof import('./../Components/VerifyEmailBanner.vue')['default']
   }
 }
