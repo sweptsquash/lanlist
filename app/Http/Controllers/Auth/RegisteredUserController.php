@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontendController;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\CountryResource;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -12,12 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class RegisteredUserController extends Controller
+class RegisteredUserController extends FrontendController
 {
     public function create()
     {
         return inertia('Auth/Register', [
-            'countries' => Country::all(),
+            'countries' => CountryResource::collection(Country::all()),
         ]);
     }
 

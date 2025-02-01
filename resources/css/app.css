@@ -56,6 +56,10 @@ h6 {
     @apply bg-white text-gray-700 hover:bg-gray-100 ring-1 ring-inset ring-gray-300 border-none focus:ring-offset-0;
 }
 
+.btn-danger {
+    @apply border-red-300 bg-red-100 text-red-700 hover:bg-red-200 focus:ring-red-500;
+}
+
 .btn-group {
     @apply isolate inline-flex;
 
@@ -211,7 +215,7 @@ label.error {
 }
 
 .multiselect-search {
-  @apply block w-full appearance-none rounded-md px-3 py-2 m-[2px] focus:outline-hidden
+  @apply block w-full appearance-none rounded-md px-3 py-2 m-0 focus:outline-hidden
     border-gray-300 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:text-gray-300 dark:hover:text-white dark:focus:text-white sm:text-sm disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 read-only:cursor-not-allowed read-only:bg-gray-50  border-0 bg-transparent focus:ring-0;
 }
 
@@ -377,6 +381,6 @@ label.error {
 }
 
 .multiselect-spacer {
-  @apply h-9 py-px box-content;
+  @apply h-9 box-content;
 }
 

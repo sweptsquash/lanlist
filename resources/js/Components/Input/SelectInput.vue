@@ -78,41 +78,39 @@ function handleChange(value: string | number | null) {
     :required="required"
   >
     <template #input>
-      <div class="flex-1">
-        <Multiselect
-          :id="id"
-          :options="options"
-          :label="labelProp"
-          :value="modelValue"
-          :can-clear="canClear"
-          :can-deselect="canDeselect"
-          :value-prop="valueProp"
-          :searchable="searchable"
-          :loading="loading"
-          :filter-results="filterResults"
-          :placeholder="placeholder"
-          :object="object"
-          @change="(e) => handleChange(e)"
-          @search-change="(e) => emit('search-change', e)"
-        >
-          <template #option="{ option }">
-            <div class="flex flex-col">
-              <p v-text="option[labelProp]"></p>
-              <span
-                v-if="option.hasOwnProperty(captionProp)"
-                class="text-sm text-gray-400"
-                v-text="option[captionProp]"
-              ></span>
-            </div>
-          </template>
-        </Multiselect>
-        <p v-if="hasHelperText" class="mt-2 text-sm text-gray-400">
-          <slot name="helperText"></slot>
-        </p>
-        <p v-if="!isValid" :id="`${id}-error`" class="mt-2 text-sm text-red-600">
-          {{ error }}
-        </p>
-      </div>
+      <Multiselect
+        :id="id"
+        :options="options"
+        :label="labelProp"
+        :value="modelValue"
+        :can-clear="canClear"
+        :can-deselect="canDeselect"
+        :value-prop="valueProp"
+        :searchable="searchable"
+        :loading="loading"
+        :filter-results="filterResults"
+        :placeholder="placeholder"
+        :object="object"
+        @change="(e) => handleChange(e)"
+        @search-change="(e) => emit('search-change', e)"
+      >
+        <template #option="{ option }">
+          <div class="flex flex-col">
+            <p v-text="option[labelProp]"></p>
+            <span
+              v-if="option.hasOwnProperty(captionProp)"
+              class="text-sm text-gray-400"
+              v-text="option[captionProp]"
+            ></span>
+          </div>
+        </template>
+      </Multiselect>
+      <p v-if="hasHelperText" class="mt-2 text-sm text-gray-400">
+        <slot name="helperText"></slot>
+      </p>
+      <p v-if="!isValid" :id="`${id}-error`" class="mt-2 text-sm text-red-600">
+        {{ error }}
+      </p>
     </template>
   </BaseInput>
 </template>

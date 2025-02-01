@@ -35,7 +35,7 @@ withDefaults(
     required?: boolean
     disabled?: boolean
     readonly?: boolean
-    modelValue: string | Date | null
+    modelValue: string | string[] | Date | null
     hideLabel?: boolean
     label?: string
     labelPosition?: 'left' | 'top'

@@ -1,25 +1,30 @@
 <script lang="ts" setup>
+import Badge from '@/Components/Badge.vue'
 import IconLoading from '@/Components/Icons/IconLoading.vue'
 import SortHeader from '@/Components/SortHeader.vue'
 import { pickBy } from 'lodash'
 import qs from 'qs'
 import { CalendarIcon, DocumentIcon, DocumentTextIcon, RssIcon } from '~/@heroicons/vue/24/outline'
 
-const props = defineProps<{ events: App.PageResource<App.Event> }>()
+const props = defineProps<{ events: App.PageResource<App.Event>; countries: App.Country[] }>()
 
 const isLoading = ref(false)
+
+const showFilters = ref(false)
 
 const filtersForm = reactive<{
   event_title: string | null
   organiser_title: string | null
   venue_title: string | null
-  start_between: string | null
+  start_between: string | string[] | null
+  country: string | null
   seats: number | null
 }>({
   event_title: null,
   organiser_title: null,
   venue_title: null,
-  start_between: '2025-01-01,2025-03-31',
+  start_between: null,
+  country: null,
   seats: null,
 })
 
@@ -27,6 +32,7 @@ const title = computed(
   () =>
     `Events ${props.events.meta.current_page > 1 ? ' &bull; Page ' + props.events.meta.current_page : ''}`,
 )
+
 const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => {
   if (typeof location !== 'undefined') {
     const urlParams = qs.parse(location.search, { ignoreQueryPrefix: true })
@@ -45,6 +51,36 @@ const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => 
     cell: 'start_date',
     direction: 'desc',
   }
+})
+
+const activeFilterCount = computed(() => {
+  let count = 0
+
+  if (filtersForm.event_title) {
+    count++
+  }
+
+  if (filtersForm.organiser_title) {
+    count++
+  }
+
+  if (filtersForm.venue_title) {
+    count++
+  }
+
+  if (filtersForm.start_between) {
+    count++
+  }
+
+  if (filtersForm.country) {
+    count++
+  }
+
+  if (filtersForm.seats) {
+    count++
+  }
+
+  return count
 })
 
 onMounted(() => {
@@ -67,7 +103,11 @@ onMounted(() => {
       }
 
       if (Object.prototype.hasOwnProperty.call(filter, 'start_between')) {
-        filtersForm.start_between = filter.start_between as string
+        filtersForm.start_between = (filter.start_between as string).split(',')
+      }
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'country')) {
+        filtersForm.country = filter.country as string
       }
 
       if (Object.prototype.hasOwnProperty.call(filter, 'seats')) {
@@ -107,7 +147,17 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
   if (filtersForm.start_between && typeof query.filter === 'object') {
     query.filter = {
       ...query.filter,
-      start_between: filtersForm.start_between,
+      start_between:
+        typeof filtersForm.start_between === 'string'
+          ? filtersForm.start_between
+          : filtersForm.start_between.join(','),
+    }
+  }
+
+  if (filtersForm.country && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      country: filtersForm.country,
     }
   }
 
@@ -146,6 +196,97 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
     },
   )
 }
+
+function applyFilters() {
+  let query: { sort: string; [key: string]: unknown } = {
+    sort: (currentSort.value.direction === 'desc' ? '-' : '') + currentSort.value.cell,
+    filter: null,
+  }
+
+  if (filtersForm.event_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      event_title: filtersForm.event_title,
+    }
+  }
+
+  if (filtersForm.organiser_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      organiser_title: filtersForm.organiser_title,
+    }
+  }
+
+  if (filtersForm.venue_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      venue_title: filtersForm.venue_title,
+    }
+  }
+
+  if (filtersForm.start_between && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      start_between:
+        typeof filtersForm.start_between === 'string'
+          ? filtersForm.start_between
+          : filtersForm.start_between.join(','),
+    }
+  }
+
+  if (filtersForm.country && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      country: filtersForm.country,
+    }
+  }
+
+  if (filtersForm.seats && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      seats: filtersForm.seats,
+    }
+  }
+
+  router.get(
+    '/events?' +
+      qs.stringify(query, {
+        filter(prefix: string, value: unknown) {
+          if (typeof value === 'object' && value !== null) {
+            return pickBy(value)
+          }
+
+          return value
+        },
+        skipNulls: true,
+        strictNullHandling: true,
+        encode: false,
+      }),
+    {},
+    {
+      replace: true,
+      preserveState: false,
+      preserveScroll: true,
+      onBefore() {
+        isLoading.value = true
+      },
+      onFinish() {
+        isLoading.value = false
+      },
+    },
+  )
+}
+
+function resetFilters() {
+  filtersForm.event_title = null
+  filtersForm.organiser_title = null
+  filtersForm.venue_title = null
+  filtersForm.start_between = null
+  filtersForm.country = null
+  filtersForm.seats = null
+
+  applyFilters()
+}
 </script>
 
 <template>
@@ -155,7 +296,14 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
     <div class="mx-auto mt-12 max-w-2xl lg:max-w-7xl">
       <Panel title="Events" subtitle="Upcoming Events World Wide">
         <template #actions>
-          <button class="btn-primary">Filters</button>
+          <button class="btn-primary" @click="showFilters = !showFilters">
+            Filters
+            <Badge
+              v-if="activeFilterCount > 0"
+              :text="activeFilterCount.toString()"
+              class="ml-2 text-xs"
+            />
+          </button>
           <div>
             <span class="btn-group">
               <a v-tooltip="'RSS'" href="#" class="btn-default"><RssIcon class="size-5" /></a>
@@ -170,13 +318,41 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
           </div>
         </template>
         <template #content>
-          <div>
-            <!-- Event Name -->
-            <!-- Organiser Name -->
-            <!-- Venue Name -->
-            <!-- Country -->
-            <!-- Start Date Between -->
-            <!-- Seats -->
+          <div
+            v-if="showFilters"
+            class="mb-4 grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-x-4"
+          >
+            <TextInput id="event_title" v-model="filtersForm.event_title" label="Event" />
+            <TextInput
+              id="organiser_title"
+              v-model="filtersForm.organiser_title"
+              label="Organiser"
+            />
+            <TextInput id="venue_title" v-model="filtersForm.venue_title" label="Venue" />
+            <SelectInput
+              id="country"
+              v-model="filtersForm.country"
+              name="country"
+              label="Country"
+              label-prop="name"
+              value-prop="code"
+              can-clear
+              can-deselect
+              searchable
+              :options="countries"
+            />
+            <DateInput
+              id="start_between"
+              v-model="filtersForm.start_between"
+              label="Start Between"
+              placeholder="DD/MM/YYYY - DD/MM/YYYY"
+              range
+            />
+            <TextInput id="seats" v-model="filtersForm.seats" label="Seats" type="number" />
+            <div class="col-span-1 flex flex-col gap-4 sm:col-span-3 sm:flex-row">
+              <button class="btn-primary flex-1" @click="applyFilters">Apply</button>
+              <button class="btn-danger flex-1" @click="resetFilters">Reset</button>
+            </div>
           </div>
 
           <div

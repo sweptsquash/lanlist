@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CountryResource;
 use App\Http\Resources\EventResource;
+use App\Models\Country;
 use App\Models\Event;
+use App\Spatie\Filter\FiltersEventVenueCountry;
 use App\Spatie\Sort\OrganiserTitleSort;
 use App\Spatie\Sort\VenueTitleSort;
 use Inertia\Response;
@@ -22,6 +25,7 @@ class EventController extends FrontendController
                 AllowedFilter::partial('organiser_title', 'organiser.title'),
                 AllowedFilter::partial('venue_title', 'venue.title'),
                 AllowedFilter::scope('start_between'),
+                AllowedFilter::custom('country', new FiltersEventVenueCountry),
                 AllowedFilter::operator('seats', FilterOperator::GREATER_THAN_OR_EQUAL),
             ])
             ->allowedSorts([
@@ -38,7 +42,10 @@ class EventController extends FrontendController
             ->paginate(32)
             ->appends(request()->query());
 
-        return inertia('Events/index', ['events' => EventResource::collection($events)]);
+        return inertia('Events/index', [
+            'events' => EventResource::collection($events),
+            'countries' => CountryResource::collection(Country::all()),
+        ]);
     }
 
     public function show(Event $event): Response

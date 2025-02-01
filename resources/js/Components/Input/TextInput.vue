@@ -5,13 +5,14 @@ import type { SetupContext } from 'vue'
 withDefaults(
   defineProps<{
     id: string
+    type?: 'text' | 'number'
     name?: string
     placeholder?: string
     autocomplete?: string
     required?: boolean
     disabled?: boolean
     readonly?: boolean
-    modelValue: string | null
+    modelValue: string | number | null
     hideLabel?: boolean
     label?: string
     labelPosition?: 'left' | 'top'
@@ -23,6 +24,7 @@ withDefaults(
   }>(),
   {
     name: undefined,
+    type: 'text',
     placeholder: undefined,
     autocomplete: 'off',
     required: false,
@@ -78,14 +80,14 @@ function handleInput(eventTarget: EventTarget | null) {
           <slot name="icon"></slot>
         </div>
         <input
-          :id="id"
-          type="text"
+          :id
+          :type
           :name="name ?? id"
-          :placeholder="placeholder"
-          :autocomplete="autocomplete"
-          :required="required"
-          :disabled="disabled"
-          :readonly="readonly"
+          :placeholder
+          :autocomplete
+          :required
+          :disabled
+          :readonly
           :value="modelValue"
           :class="['form-input', { 'pl-10': hasIcon, 'pr-10': !isValid, error: !isValid }]"
           :aria-invalid="isValid"
