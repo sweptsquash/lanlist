@@ -68,8 +68,6 @@ declare global {
   const useIsAdmin: typeof import('../Composables/useUser')['useIsAdmin']
   const useIsAuthenticated: typeof import('../Composables/useUser')['useIsAuthenticated']
   const useIsImpersonating: typeof import('../Composables/useUser')['useIsImpersonating']
-  const useIsMarketed: typeof import('../Composables/useUser')['useIsMarketed']
-  const useIsStaff: typeof import('../Composables/useUser')['useIsStaff']
   const useIsVerified: typeof import('../Composables/useUser')['useIsVerified']
   const useModel: typeof import('vue')['useModel']
   const usePage: typeof import('@inertiajs/vue3')['usePage']

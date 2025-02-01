@@ -1,22 +1,38 @@
 <script lang="ts" setup>
 import IconLoading from '@/Components/Icons/IconLoading.vue'
 import SortHeader from '@/Components/SortHeader.vue'
+import { pickBy } from 'lodash'
+import qs from 'qs'
 import { CalendarIcon, DocumentIcon, DocumentTextIcon, RssIcon } from '~/@heroicons/vue/24/outline'
 
 const props = defineProps<{ events: App.PageResource<App.Event> }>()
 
 const isLoading = ref(false)
 
+const filtersForm = reactive<{
+  event_title: string | null
+  organiser_title: string | null
+  venue_title: string | null
+  start_between: string | null
+  seats: number | null
+}>({
+  event_title: null,
+  organiser_title: null,
+  venue_title: null,
+  start_between: '2025-01-01,2025-03-31',
+  seats: null,
+})
+
 const title = computed(
   () =>
     `Events ${props.events.meta.current_page > 1 ? ' &bull; Page ' + props.events.meta.current_page : ''}`,
 )
 const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => {
-  if (typeof window !== 'undefined') {
-    const urlParams = new URLSearchParams(window.location.search)
+  if (typeof location !== 'undefined') {
+    const urlParams = qs.parse(location.search, { ignoreQueryPrefix: true })
 
-    if (urlParams.has('sort')) {
-      const cell = urlParams.get('sort') as string
+    if (Object.prototype.hasOwnProperty.call(urlParams, 'sort')) {
+      const cell = urlParams.sort as string
 
       return {
         cell: cell.replace('-', ''),
@@ -31,9 +47,104 @@ const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => 
   }
 })
 
+onMounted(() => {
+  if (typeof location !== 'undefined') {
+    const urlParams = qs.parse(location.search, { ignoreQueryPrefix: true })
+
+    if (Object.prototype.hasOwnProperty.call(urlParams, 'filter')) {
+      const filter = urlParams.filter as Record<string, unknown>
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'event_title')) {
+        filtersForm.event_title = filter.event_title as string
+      }
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'organiser_title')) {
+        filtersForm.organiser_title = filter.organiser_title as string
+      }
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'venue_title')) {
+        filtersForm.venue_title = filter.venue_title as string
+      }
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'start_between')) {
+        filtersForm.start_between = filter.start_between as string
+      }
+
+      if (Object.prototype.hasOwnProperty.call(filter, 'seats')) {
+        filtersForm.seats = filter.seats as number
+      }
+    }
+  }
+})
+
 function applySort(cell: string, sort: 'asc' | 'desc') {
-  router.get('/events', { sort: `${sort === 'desc' ? '-' : ''}${cell}` }, { replace: true })
-  // TODO - Add filters to the query string
+  let query: { sort: string; [key: string]: unknown } = {
+    sort: `${sort === 'desc' ? '-' : ''}${cell}`,
+    filter: null,
+  }
+
+  if (filtersForm.event_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      event_title: filtersForm.event_title,
+    }
+  }
+
+  if (filtersForm.organiser_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      organiser_title: filtersForm.organiser_title,
+    }
+  }
+
+  if (filtersForm.venue_title && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      venue_title: filtersForm.venue_title,
+    }
+  }
+
+  if (filtersForm.start_between && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      start_between: filtersForm.start_between,
+    }
+  }
+
+  if (filtersForm.seats && typeof query.filter === 'object') {
+    query.filter = {
+      ...query.filter,
+      seats: filtersForm.seats,
+    }
+  }
+
+  router.get(
+    '/events?' +
+      qs.stringify(query, {
+        filter(prefix: string, value: unknown) {
+          if (typeof value === 'object' && value !== null) {
+            return pickBy(value)
+          }
+
+          return value
+        },
+        skipNulls: true,
+        strictNullHandling: true,
+        encode: false,
+      }),
+    {},
+    {
+      replace: true,
+      preserveState: false,
+      preserveScroll: true,
+      onBefore() {
+        isLoading.value = true
+      },
+      onFinish() {
+        isLoading.value = false
+      },
+    },
+  )
 }
 </script>
 
@@ -47,15 +158,26 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
           <button class="btn-primary">Filters</button>
           <div>
             <span class="btn-group">
-              <a href="#" class="btn-default"><RssIcon class="size-5" /></a>
-              <a href="#" class="btn-default"><CalendarIcon class="size-5" /></a>
-              <a href="#" class="btn-default"><DocumentTextIcon class="size-5" /></a>
-              <a href="#" class="btn-default"><DocumentIcon class="size-5" /></a>
+              <a v-tooltip="'RSS'" href="#" class="btn-default"><RssIcon class="size-5" /></a>
+              <a v-tooltip="'iCalendar'" href="#" class="btn-default">
+                <CalendarIcon class="size-5" />
+              </a>
+              <a v-tooltip="'CSV'" href="#" class="btn-default">
+                <DocumentTextIcon class="size-5" />
+              </a>
+              <a v-tooltip="'JSON'" href="#" class="btn-default"><DocumentIcon class="size-5" /></a>
             </span>
           </div>
         </template>
         <template #content>
-          <div></div>
+          <div>
+            <!-- Event Name -->
+            <!-- Organiser Name -->
+            <!-- Venue Name -->
+            <!-- Country -->
+            <!-- Start Date Between -->
+            <!-- Seats -->
+          </div>
 
           <div
             v-if="(events === undefined || events?.data?.length === 0) && !isLoading"
@@ -201,6 +323,12 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
               </tbody>
             </table>
           </div>
+
+          <Pagination
+            v-if="events && events.meta.total > events.meta.per_page"
+            class="mt-4"
+            :meta="events.meta"
+          />
         </template>
       </Panel>
     </div>

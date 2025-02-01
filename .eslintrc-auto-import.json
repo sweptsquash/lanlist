@@ -1,5 +1,6 @@
 {
   "globals": {
+    "$constants": true,
     "Component": true,
     "ComponentPublicInstance": true,
     "ComputedRef": true,
@@ -73,23 +74,20 @@
     "useFormatCurrency": true,
     "useFormatNumber": true,
     "useId": true,
+    "useIsAdmin": true,
+    "useIsAuthenticated": true,
+    "useIsImpersonating": true,
+    "useIsVerified": true,
     "useModel": true,
     "usePage": true,
     "usePluralize": true,
     "useSlots": true,
     "useTemplateRef": true,
+    "useUser": true,
+    "useUserDateFormat": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true,
-    "useIsAuthenticated": true,
-    "useIsImpersonating": true,
-    "useIsMarketed": true,
-    "useIsStaff": true,
-    "useIsVerified": true,
-    "useUser": true,
-    "useUserDateFormat": true,
-    "$constants": true,
-    "useIsAdmin": true
+    "watchSyncEffect": true
   }
 }

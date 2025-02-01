@@ -1,5 +1,6 @@
 @import '@vuepic/vue-datepicker/dist/main.css';
 @import 'leaflet/dist/leaflet.css';
+@import 'floating-vue/dist/style.css';
 
 @import "tailwindcss";
 @plugin "@tailwindcss/forms";

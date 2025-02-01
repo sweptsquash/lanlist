@@ -3,6 +3,7 @@ import routes from '@/routes/routes.json'
 import { createInertiaApp } from '@inertiajs/vue3'
 import createServer from '@inertiajs/vue3/server'
 import { renderToString } from '@vue/server-renderer'
+import FloatingVue from 'floating-vue'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { trail } from 'momentum-trail'
 import { createSSRApp, type DefineComponent, h } from 'vue'
@@ -27,6 +28,7 @@ createServer((page) =>
         render: () => h(App, props),
       })
         .use(plugin)
+        .use(FloatingVue)
         .use(trail, { routes, absolute: true })
 
       return app
