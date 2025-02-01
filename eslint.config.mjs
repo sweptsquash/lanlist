@@ -42,7 +42,6 @@ export default tseslint.config(
             'config/**/*',
             'database/**/*',
             'node_modules/**/*',
-            'old-site/**/*',
             'public/**/*',
             'routes/**/*',
             'storage/**/*',
@@ -52,8 +51,10 @@ export default tseslint.config(
             '*.md',
             'eslint.config.mjs',
             'tailwind.config.mjs',
+            'resources/js/routes/routes.json',
             'resources/js/types/routes.d.ts',
             'resources/js/types/vite-env.d.ts',
+            'old-site/**/*',
         ],
     },
     {

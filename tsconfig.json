@@ -1,8 +1,6 @@
 {
     "compilerOptions": {
         "allowJs": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
         "strict": true,
         "jsx": "preserve",
         "sourceMap": true,
@@ -10,8 +8,25 @@
         "isolatedModules": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "lib": ["ESNext", "DOM"],
         "skipLibCheck": true,
+        "target": "ESNext",
+        "moduleDetection": "force",
+        "verbatimModuleSyntax": true,
+        "noUncheckedIndexedAccess": false,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitOverride": true,
+        "module": "preserve",
+        "noEmit": true,
+        "lib": [
+            "ESNext",
+            "dom",
+            "dom.iterable",
+            "webworker"
+        ],
+        "jsxImportSource": "vue",
+        "moduleResolution": "node",
+        "useDefineForClassFields": true,
+        "noImplicitThis": true,
         "types": ["vite/client", "node", "momentum-layout/macro", "@inertiajs/vue3"],
         "baseUrl": ".",
         "paths": {
