@@ -50,7 +50,13 @@ class HandleInertiaRequests extends Middleware
         return [
             'location' => $request->url(),
             'notification' => session('notification'),
-            'user' => $request->user() ? UserResource::make($request->user()) : null,
+            'socials' => [
+                'discord' => config('services.discord.enabled'),
+                'twitch' => config('services.twitch.enabled'),
+            ],
+            'isImpersonating' => false,
+            'isAdmin' => $request->user()?->hasRole('admin') ?? false,
+            'user' => $request->user() ? UserResource::make($request->user()->load('roles.permissions', 'country')) : null,
         ];
     }
 }
