@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin IdeHelperOrganiser
@@ -13,13 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Organiser extends Model
 {
     /** @use HasFactory<\Database\Factories\OrganiserFactory> */
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'title',
         'slug',
         'website',
-        'stream_group_url',
+        'steam_group_url',
         'blurb',
         'is_published',
         'use_favicon',
@@ -33,6 +35,18 @@ class Organiser extends Model
             'use_favicon' => 'boolean',
             'assumed_stale_at' => 'datetime',
         ];
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
     }
 
     /** @return HasMany<Event, $this> */

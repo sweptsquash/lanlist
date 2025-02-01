@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Version
+    |--------------------------------------------------------------------------
+    |
+    | This value is the version of our application. It is based on the
+    | Semantic Versioning schema. More info about Semantic
+    | Versioning can be found here https://semver.org/
+    |
+    */
+
+    'version' => '1.0.0',
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -122,5 +135,14 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    'company' => [
+        'name' => 'LANList',
+        'support' => 'admin@lanlist.info',
+    ],
+
+    'vat_rate' => 0,
+
+    'media_url_expires_after_minutes' => 10,
 
 ];

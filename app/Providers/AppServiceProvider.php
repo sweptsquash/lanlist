@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Listeners\UserEventSubscriber;
+use App\Listeners\UserRegisterSubscriber;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Support\Facades\Date;
@@ -47,16 +49,15 @@ class AppServiceProvider extends ServiceProvider
 
     private function subscribeEvents(): void
     {
+        Event::subscribe(UserRegisterSubscriber::class);
+        Event::subscribe(UserEventSubscriber::class);
+
         Event::listen(function (SocialiteWasCalled $event) {
             $event->extendSocialite('discord', \SocialiteProviders\Discord\Provider::class);
         });
 
         Event::listen(function (SocialiteWasCalled $event) {
-            $event->extendSocialite('facebook', \SocialiteProviders\Facebook\Provider::class);
-        });
-
-        Event::listen(function (SocialiteWasCalled $event) {
-            $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
+            $event->extendSocialite('twitch', \SocialiteProviders\Twitch\Provider::class);
         });
     }
 }

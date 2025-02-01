@@ -5,10 +5,13 @@ namespace App\Models;
 use App\Enums\AlcoholEnum;
 use App\Enums\ShowersEnum;
 use App\Enums\SmokingEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @mixin IdeHelperEvent
@@ -16,13 +19,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory;
+    use HasFactory, HasSlug;
 
     protected $fillable = [
         'creator_id',
         'organiser_id',
         'venue_id',
         'title',
+        'slug',
         'start_date',
         'end_date',
         'blurb',
@@ -55,6 +59,18 @@ class Event extends Model
         ];
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
+    }
+
     /** @return BelongsTo<User, $this> */
     public function creator(): BelongsTo
     {
@@ -77,5 +93,12 @@ class Event extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(EventReview::class);
+    }
+
+    public function scopeUpcoming(Builder $query): void
+    {
+        $query->where('is_published', true)
+            ->whereDate('start_date', '>=', today())
+            ->orderBy('start_date');
     }
 }
