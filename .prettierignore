@@ -108,3 +108,5 @@ tscofig.json
 routes.json
 
 *.d.ts
+
+old-site/

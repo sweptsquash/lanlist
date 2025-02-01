@@ -81,6 +81,15 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "useIsAuthenticated": true,
+    "useIsImpersonating": true,
+    "useIsMarketed": true,
+    "useIsStaff": true,
+    "useIsVerified": true,
+    "useUser": true,
+    "useUserDateFormat": true,
+    "$constants": true,
+    "useIsAdmin": true
   }
 }
