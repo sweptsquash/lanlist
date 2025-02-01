@@ -8,6 +8,7 @@ use App\Enums\SmokingEnum;
 use App\Models\Organiser;
 use App\Models\User;
 use App\Models\Venue;
+use Carbon\Carbon;
 use DateInterval;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,7 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
-        $eventDate = fake()->dateTimeBetween('now', '+1 year');
+        $eventDate = Carbon::parse(fake()->dateTimeBetween('now', '+1 year'))->toImmutable();
 
         return [
             'creator_id' => User::factory()->create()->id,
@@ -31,7 +32,7 @@ class EventFactory extends Factory
             'venue_id' => Venue::factory()->create()->id,
             'title' => fake()->words(2, true),
             'start_date' => $eventDate,
-            'end_date' => $eventDate->add(new DateInterval('P2D')),
+            'end_date' => $eventDate->addDays(2),
             'blurb' => fake()->sentence(10),
             'website' => fake()->url,
             'image_url' => fake()->imageUrl(),

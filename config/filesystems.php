@@ -45,6 +45,18 @@ return [
             'throw' => false,
         ],
 
+        'media' => [
+            'driver' => env('FILES_DRIVER', 'local'),
+            'root' => env('FILES_ROOT', storage_path('app')).'/media',
+
+            'key' => env('DO_ACCESS_KEY_ID'),
+            'secret' => env('DO_SECRET_ACCESS_KEY'),
+            'region' => env('DO_DEFAULT_REGION'),
+            'bucket' => env('DO_SPACE'),
+            'url' => env('DO_URL'),
+            'endpoint' => env('DO_ENDPOINT'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

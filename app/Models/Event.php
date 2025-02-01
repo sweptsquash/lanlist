@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -19,10 +21,10 @@ use Spatie\Sluggable\SlugOptions;
  * @mixin IdeHelperEvent
  */
 #[ScopedBy(EventPublishedScope::class)]
-class Event extends Model
+class Event extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
-    use HasFactory, HasSlug;
+    use HasFactory, HasSlug, InteractsWithMedia;
 
     protected $fillable = [
         'creator_id',
@@ -72,6 +74,11 @@ class Event extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('banner')->singleFile();
     }
 
     /** @return BelongsTo<User, $this> */

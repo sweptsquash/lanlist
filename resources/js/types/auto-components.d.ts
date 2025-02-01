@@ -17,6 +17,7 @@ declare module 'vue' {
     CheckBox: typeof import('./../Components/Input/CheckBox.vue')['default']
     DateInput: typeof import('./../Components/Input/DateInput.vue')['default']
     EmailInput: typeof import('./../Components/Input/EmailInput.vue')['default']
+    HeaderSection: typeof import('./../Components/HeaderSection.vue')['default']
     IconLoading: typeof import('./../Components/Icons/IconLoading.vue')['default']
     InertiaHead: typeof import('@inertiajs/vue3')['Head']
     InertiaLink: typeof import('@inertiajs/vue3')['Link']

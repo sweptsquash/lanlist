@@ -4,6 +4,9 @@
     "private": true,
     "type": "module",
     "browserslist": "> 0.2%, last 2 versions, Firefox ESR, not dead",
+    "engines": {
+        "node": "^22.13.1"
+    },
     "scripts": {
         "dev": "run-p routes lint && vite",
         "build:dev": "run-p routes lint && vite build --mode development && vite build --mode development --ssr",
@@ -11,7 +14,8 @@
         "lint": "eslint . --fix",
         "test:lint": "eslint .",
         "routes": "php artisan trail:generate",
-        "tsc": "vue-tsc --noEmit"
+        "tsc": "vue-tsc --noEmit",
+        "postinstall": "npx puppeteer browsers install chrome"
     },
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
@@ -36,7 +40,7 @@
         "photoswipe": "^5.4.4",
         "pluralize": "^8.0.0",
         "pretty-bytes": "^6.1.1",
-        "puppeteer": "^23.9.0",
+        "puppeteer": "^24.1.1",
         "qs": "^6.14.0",
         "tailwindcss": "^4.0.0",
         "uuid": "^11.0.3",

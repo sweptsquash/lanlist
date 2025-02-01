@@ -448,7 +448,9 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      <InertiaLink href="#" class="link">{{ event.title }}</InertiaLink>
+                      <InertiaLink :href="route('events.show', { event: event.slug })" class="link">
+                        {{ event.title }}
+                      </InertiaLink>
                     </td>
                     <td
                       :class="[

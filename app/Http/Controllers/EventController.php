@@ -14,6 +14,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\Enums\FilterOperator;
 use Spatie\QueryBuilder\QueryBuilder;
+use Vormkracht10\LaravelOpenGraphImage\Facades\OpenGraphImage;
 
 class EventController extends FrontendController
 {
@@ -53,7 +54,13 @@ class EventController extends FrontendController
         $event->load(['organiser', 'venue', 'reviews']);
 
         return inertia('Events/view', [
-            'event' => $event,
+            'event' => EventResource::make($event),
+            'ogImage' => OpenGraphImage::url([
+                'title' => $event->title,
+                'subtitle' => "{$event->start_date->format('jS F')} - {$event->end_date->format('jS F Y')}",
+                'learnmore' => true,
+                'image' => $event->getFirstMedia('banner')?->getPathRelativeToRoot(),
+            ]),
         ]);
     }
 }

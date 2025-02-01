@@ -31,6 +31,7 @@ declare namespace App {
         organiser?: Organiser;
         venue?: Venue;
         reviews?: EventReview[];
+        banner?: Media;
         created_at: string;
         updated_at: string;
     }
@@ -44,6 +45,19 @@ declare namespace App {
         rating_activities: number;
         created_at: string;
         updated_at: string;
+    }
+
+    export type Media = {
+        uuid: string;
+        name: string;
+        size: number;
+        mime_type: string | null;
+        collection_name: string;
+        human_size: string;
+        url: string;
+        conversions: { name: string; url: string }[];
+        path: string;
+        created_at: string;
     }
 
     export type NotificationType =  'success' | 'error' | 'warning' | 'info' | 'default';
@@ -66,6 +80,8 @@ declare namespace App {
         events?: Event[];
         users?: User[];
         requests?: OrganiserJoinRequest[];
+        logo?: Media;
+        favicon?: Media;
         created_at: string;
         updated_at: string;
     }
