@@ -18,7 +18,7 @@ class OrganiserSeeder extends Seeder
         $organisers->each(function (Organiser $organiser) {
             $users = $organiser->users()->saveMany(User::factory(5)->make());
 
-            $users->each(function ($user, $index) {
+            $users->each(function (User $user, int $index) {
                 if ($index === 0) {
                     $user->assignRole('organiser-admin');
                 } else {

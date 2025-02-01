@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('organiser_id')->constrained('organisers');
             $table->foreignId('venue_id')->constrained('venues');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->longText('blurb')->nullable();

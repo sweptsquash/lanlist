@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +19,7 @@ class VenueFactory extends Factory
     {
         return [
             'title' => fake()->sentence(3),
-            'country' => fake()->country,
+            'country_id' => Country::inRandomOrder()->limit(1)->first()->id,
             'lat' => fake()->latitude,
             'lng' => fake()->longitude,
         ];

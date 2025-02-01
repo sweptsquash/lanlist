@@ -18,7 +18,7 @@ class EventSeeder extends Seeder
         $venues = Venue::all();
 
         $venues->each(function (Venue $venue) {
-            $organiser = Organiser::inRandomOrder()->limit(1)->first();
+            $organiser = Organiser::whereHas('users')->inRandomOrder()->limit(1)->first();
 
             $events = Event::factory(5)->create([
                 'venue_id' => $venue->id,
@@ -28,7 +28,7 @@ class EventSeeder extends Seeder
                 })->first()->id,
             ]);
 
-            $events->reviews()->createMany(EventReview::factory(5)->make());
+            $events->each(fn (Event $event) => $event->reviews()->createMany(EventReview::factory(5)->make()->toArray()));
         });
     }
 }

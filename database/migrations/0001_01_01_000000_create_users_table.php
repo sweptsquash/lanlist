@@ -13,10 +13,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('country_id')->nullable()->constrained();
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->timestamp('password_changed_at')->nullable();
+            $table->string('date_format')->default('d/m/Y H:i:s');
+            $table->string('timezone')->default('UTC');
+            $table->unsignedBigInteger('twitch_id')->nullable();
+            $table->unsignedBigInteger('discord_id')->nullable();
+            $table->ipAddress('ip')->nullable();
+            $table->timestamp('last_active_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

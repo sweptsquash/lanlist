@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('venues', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->string('title');
-            $table->string('country');
             $table->double('lat')->nullable()->comment('The latitiude of the postcode');
             $table->double('lng')->nullable()->comment('The longitude of the postcode');
             $table->timestamps();

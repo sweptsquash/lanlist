@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('website')->nullable();
-            $table->string('stream_group_url')->nullable();
+            $table->string('steam_group_url')->nullable();
             $table->longText('blurb')->nullable();
             $table->boolean('is_published')->default(false);
             $table->boolean('use_favicon')->default(false);

@@ -17,10 +17,10 @@ class OrganiserFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(3),
+            'title' => fake()->words(3, true),
             'slug' => fake()->slug,
             'website' => fake()->url,
-            'stream_group_url' => fake()->url,
+            'steam_group_url' => fake()->url,
             'blurb' => fake()->sentence(10),
             'is_published' => fake()->boolean,
             'use_favicon' => fake()->boolean,

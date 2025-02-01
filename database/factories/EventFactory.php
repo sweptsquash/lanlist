@@ -23,13 +23,13 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
-        $eventDate = fake()->dateTime();
+        $eventDate = fake()->dateTimeBetween('now', '+1 year');
 
         return [
             'creator_id' => User::factory()->create()->id,
             'organiser_id' => Organiser::factory()->create()->id,
             'venue_id' => Venue::factory()->create()->id,
-            'title' => fake()->sentence(3),
+            'title' => fake()->words(2, true),
             'start_date' => $eventDate,
             'end_date' => $eventDate->add(new DateInterval('P2D')),
             'blurb' => fake()->sentence(10),
