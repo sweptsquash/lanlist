@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\AlcoholEnum;
 use App\Enums\ShowersEnum;
 use App\Enums\SmokingEnum;
+use App\Models\Scopes\EventPublishedScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +18,7 @@ use Spatie\Sluggable\SlugOptions;
 /**
  * @mixin IdeHelperEvent
  */
+#[ScopedBy(EventPublishedScope::class)]
 class Event extends Model
 {
     /** @use HasFactory<\Database\Factories\EventFactory> */
@@ -95,10 +98,19 @@ class Event extends Model
         return $this->hasMany(EventReview::class);
     }
 
+    public function scopeWithUnpublished(Builder $query): void
+    {
+        $query->withoutGlobalScope(EventPublishedScope::class);
+    }
+
     public function scopeUpcoming(Builder $query): void
     {
-        $query->where('is_published', true)
-            ->whereDate('start_date', '>=', today())
+        $query->whereDate('start_date', '>=', today())
             ->orderBy('start_date');
+    }
+
+    public function scopeStartBetween(Builder $query, string $start, string $end): void
+    {
+        $query->whereBetween('start_date', [$start, $end]);
     }
 }

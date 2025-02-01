@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Observers\UserObserver;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -86,6 +87,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         $this->addMediaConversion('thumb')
             ->fit(Fit::Crop, $thumbnailSize, $thumbnailSize);
+    }
+
+    /** @return Attribute<string|null, never> */
+    protected function profilePhoto(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->getFirstTemporaryUrl(now()->addMinutes(config('app.media_url_expires_after_minutes')), 'avatar')
+        );
     }
 
     /** @return BelongsTo<Organiser, $this> */

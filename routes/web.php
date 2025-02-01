@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Events\EventController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Models\Event;
 use App\Models\Venue;
