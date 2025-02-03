@@ -1,5 +1,3 @@
-import { isNumber } from 'lodash'
-
 export default function useFormatCurrency(
   value: number | bigint | Intl.StringNumericLiteral,
   currencyCode: string = 'GBP',
@@ -15,10 +13,8 @@ export default function useFormatCurrency(
     formatOptions = {}
   }
 
-  isNumber(value)
-
   return Intl.NumberFormat(typeof navigator !== 'undefined' ? navigator.language : 'en-GB', {
     ...formatOptions,
     ...options,
-  }).format(isNumber(value) ? value / 100 : value)
+  }).format(value)
 }

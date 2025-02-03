@@ -51,7 +51,7 @@ class EventController extends FrontendController
 
     public function show(Event $event): Response
     {
-        $event->load(['organiser', 'venue', 'reviews']);
+        $event->load(['organiser', 'venue', 'reviews', 'media']);
 
         return inertia('Events/view', [
             'event' => EventResource::make($event),

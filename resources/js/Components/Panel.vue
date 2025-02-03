@@ -13,10 +13,10 @@ const withFooter = computed(() => !!slots['footer'])
   <div class="rounded-lg bg-white ring-1 shadow ring-black/5 dark:bg-gray-800 dark:ring-white/15">
     <div
       v-if="title"
-      class="flex flex-wrap items-center justify-between border-b border-b-black/5 p-4 dark:border-b-white/15"
+      class="flex flex-wrap items-center justify-between border-b border-b-black/5 px-4 py-2 dark:border-b-white/15"
     >
       <div>
-        <h3 class="font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
+        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">{{ title }}</h3>
         <p v-if="subtitle" class="mt-1 text-sm text-gray-500 dark:text-gray-200">
           {{ subtitle }}
         </p>
@@ -25,7 +25,7 @@ const withFooter = computed(() => !!slots['footer'])
         <slot name="actions" />
       </div>
     </div>
-    <div class="px-4 py-5 text-gray-500 sm:p-6 dark:text-gray-300">
+    <div class="px-4 py-5 text-gray-500 dark:text-gray-300">
       <slot name="content" />
     </div>
     <div

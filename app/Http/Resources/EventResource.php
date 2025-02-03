@@ -27,6 +27,8 @@ class EventResource extends JsonResource
             'price_on_door' => $this->price_on_door,
             'price_in_adv' => $this->price_in_adv,
             'currency' => $this->currency,
+            'age_restrictions' => $this->age_restrictions,
+            'sleeping' => $this->sleeping,
             'alcohol' => $this->alcohol,
             'smoking' => $this->smoking,
             'showers' => $this->showers,
@@ -34,6 +36,9 @@ class EventResource extends JsonResource
             'network_mbps' => $this->network_mbps,
             'internet_mbps' => $this->internet_mbps,
             'is_published' => $this->is_published,
+            'banner' => $this->whenLoaded('media', function () {
+                return MediaResource::make($this->getFirstMedia('banner'));
+            }),
             'creator' => UserResource::make($this->whenLoaded('creator')),
             'organiser' => OrganiserResource::make($this->whenLoaded('organiser')),
             'venue' => VenueResource::make($this->whenLoaded('venue')),

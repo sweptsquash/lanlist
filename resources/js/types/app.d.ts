@@ -1,4 +1,12 @@
 declare namespace App {
+    export type AlcoholEnum = 'unknown' | 'not_allowed_at_the_event' | 'bring_your_own_alcohol' | 'bar_at_the_venue' | 'bar_at_the_venue_and_bring_your_own_alcohol'
+
+    export type SleepingEnum = 'not_arranged' | 'not_overnight' | 'private_rooms' | 'shared_room' | 'shared_room_and_camping'
+
+    export type SmokingEnum = 'unknown' | 'outside_venue' | 'smoking_area_in_venue'
+
+    export type ShowersEnum = 'unknown' | 'not_at_venue' | 'available_at_venue'
+
     export type Country = {
         id: number;
         code: string;
@@ -20,9 +28,11 @@ declare namespace App {
         price_on_door: number | null;
         price_in_adv: number | null;
         currency: string | null;
-        alcohol: boolean | null;
-        smoking: boolean | null;
-        showers: boolean | null;
+        age_restrictions: string | null;
+        sleeping: SleepingEnum | null;
+        alcohol: AlcoholEnum | null;
+        smoking: SmokingEnum | null;
+        showers: ShowersEnum | null;
         seats: number | null;
         network_mbps: number | null;
         internet_mbps: number | null;

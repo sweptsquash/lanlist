@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AlcoholEnum;
 use App\Enums\ShowersEnum;
+use App\Enums\SleepingEnum;
 use App\Enums\SmokingEnum;
 use App\Models\Scopes\EventPublishedScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -40,6 +41,8 @@ class Event extends Model implements HasMedia
         'price_on_door',
         'price_in_adv',
         'currency',
+        'age_restrictions',
+        'sleeping',
         'alcohol',
         'smoking',
         'showers',
@@ -50,16 +53,18 @@ class Event extends Model implements HasMedia
     ];
 
     /**
-     * @return array{start_date: 'datetime', end_date: 'datetime', alcohol: 'App\Enums\AlcoholEnum', smoking: 'App\Enums\SmokingEnum', showers: 'App\Enums\ShowersEnum', is_published: 'boolean'}
+     * @return array{start_date: 'datetime', end_date: 'datetime', sleeping: 'App\Enums\SleepingEnum', alcohol: 'App\Enums\AlcoholEnum', smoking: 'App\Enums\SmokingEnum', showers: 'App\Enums\ShowersEnum', seats: 'integer', is_published: 'boolean'}
      */
     protected function casts(): array
     {
         return [
             'start_date' => 'datetime',
             'end_date' => 'datetime',
+            'sleeping' => SleepingEnum::class,
             'alcohol' => AlcoholEnum::class,
             'smoking' => SmokingEnum::class,
             'showers' => ShowersEnum::class,
+            'seats' => 'integer',
             'is_published' => 'boolean',
         ];
     }

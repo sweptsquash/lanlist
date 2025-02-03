@@ -34,6 +34,7 @@
         "floating-vue": "^5.2.2",
         "leaflet": "^1.9.4",
         "lodash": "^4.17.21",
+        "lucide-vue-next": "^0.474.0",
         "mini-svg-data-uri": "^1.4.4",
         "momentum-layout": "^0.1.0",
         "momentum-trail": "^0.4.0",

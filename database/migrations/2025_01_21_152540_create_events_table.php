@@ -26,7 +26,9 @@ return new class extends Migration
             $table->float('price_on_door', 2)->nullable();
             $table->float('price_in_adv', 2)->nullable();
             $table->string('currency')->nullable();
+            $table->string('age_restrictions')->nullable();
             $table->string('alcohol')->nullable();
+            $table->string('sleeping')->nullable();
             $table->string('smoking')->nullable();
             $table->string('showers')->nullable();
             $table->integer('seats')->nullable();
