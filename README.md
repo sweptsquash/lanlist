@@ -7,7 +7,8 @@ A list of LAN Parties
 - Laravel 11
 - InertiaJS
 - VueJS 3.x
-- TailwindCSS 3.x
+- TailwindCSS 4.x
+- Puppeteer (via [Spatie Browsershot](https://spatie.be/docs/browsershot/v4/requirements))
 
 ## Development
 
@@ -66,16 +67,17 @@ Note: You can this normally if you have Node already installed `npm run dev`
 
 ## NPM Scripts
 - `dev` - Run HMR client/server
-- `build:dev` - Build development version of client and SSR
-- `build:prod` - Build production version of client and SSR
+- `build:dev` - Build development version of client and SSR (includes generating the routes.json and linting the current codebase)
+- `build:prod` - Build production version of client and SSR (includes generating the routes.json, linting the current codebase and enforcing TypeScript checks pass)
 - `lint` - Run linter and prettier checks and write changes
+- `routes` - Manually regenerate the routes.json (Should you need it)
 - `test:lint` - Dry run of `lint` and output a list of warnings/errors
 - `tsc` - TypeScript Enforcement Check
 
 ## Composer Commands:
 Automated Scripts
 - `update` will publish third-party assets and regenerate all ide-helpers
-- `install` will generate ziggy routes `resources/js/ziggy.js`
+- `install` will generate trail routes `resources/js/routes/routes.json`
 - `lint` - Format PHP based to Laravel Standards.
 - `test:lint` - Dry run of `lint` output a list of warnings/errors.
 - `test` - Run tests in parallel with no coverage and ensure database is recreated
