@@ -139,7 +139,7 @@ const googleMapsLink = computed(
                     <time :datetime="useDayJs(event.start_date).toISOString()" itemprop="startDate">
                       {{ useDayJs(event.start_date).format(useUserDateFormat) }}
                     </time>
-                    -
+                    <span class="mx-2">-</span>
                     <time :datetime="useDayJs(event.end_date).toISOString()" itemprop="endDate">
                       {{ useDayJs(event.end_date).format(useUserDateFormat) }}
                     </time>
