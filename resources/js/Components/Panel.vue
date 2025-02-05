@@ -21,7 +21,7 @@ const withFooter = computed(() => !!slots['footer'])
           {{ subtitle }}
         </p>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center gap-4">
         <slot name="actions" />
       </div>
     </div>

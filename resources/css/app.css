@@ -40,7 +40,7 @@ h6 {
     @apply text-indigo-400 hover:underline hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white;
 }
 
-[class*='btn-'] {
+[class*='btn-']:not(.btn-group) {
     @apply rounded border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer;
 }
 

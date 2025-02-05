@@ -88,6 +88,7 @@ declare namespace App {
         use_favicon: boolean;
         assumed_stale_at: string | null;
         events?: Event[];
+        events_count?: number;
         users?: User[];
         requests?: OrganiserJoinRequest[];
         logo?: Media;
@@ -170,6 +171,7 @@ declare namespace App {
         lat: number;
         lng: number;
         events?: Event[];
+        events_count?: number;
         created_at: string;
         updated_at: string;
     }

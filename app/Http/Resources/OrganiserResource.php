@@ -26,6 +26,7 @@ class OrganiserResource extends JsonResource
             'use_favicon' => $this->use_favicon,
             'assumed_stale_at' => $this->assumed_stale_at,
             'events' => EventResource::collection($this->whenLoaded('events')),
+            'events_count' => $this->whenCounted('events_count'),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'requests' => OrganiserJoinRequestResource::collection($this->whenLoaded('joinRequests')),
             'created_at' => $this->created_at,

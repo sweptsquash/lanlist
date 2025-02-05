@@ -197,8 +197,9 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
   )
 }
 
-function applyFilters() {
-  let query: { sort: string; [key: string]: unknown } = {
+function applyFilters(pageNumber: number | null = null) {
+  let query: { page: number | null; sort: string; [key: string]: unknown } = {
+    page: pageNumber ?? null,
     sort: (currentSort.value.direction === 'desc' ? '-' : '') + currentSort.value.cell,
     filter: null,
   }
@@ -304,18 +305,16 @@ function resetFilters() {
               class="ml-2 text-xs"
             />
           </button>
-          <div>
-            <span class="btn-group">
-              <a v-tooltip="'RSS'" href="#" class="btn-default"><RssIcon class="size-5" /></a>
-              <a v-tooltip="'iCalendar'" href="#" class="btn-default">
-                <CalendarIcon class="size-5" />
-              </a>
-              <a v-tooltip="'CSV'" href="#" class="btn-default">
-                <DocumentTextIcon class="size-5" />
-              </a>
-              <a v-tooltip="'JSON'" href="#" class="btn-default"><DocumentIcon class="size-5" /></a>
-            </span>
-          </div>
+          <span class="btn-group">
+            <a v-tooltip="'RSS'" href="#" class="btn-default"><RssIcon class="size-5" /></a>
+            <a v-tooltip="'iCalendar'" href="#" class="btn-default">
+              <CalendarIcon class="size-5" />
+            </a>
+            <a v-tooltip="'CSV'" href="#" class="btn-default">
+              <DocumentTextIcon class="size-5" />
+            </a>
+            <a v-tooltip="'JSON'" href="#" class="btn-default"><DocumentIcon class="size-5" /></a>
+          </span>
         </template>
         <template #content>
           <div
@@ -350,7 +349,7 @@ function resetFilters() {
             />
             <TextInput id="seats" v-model="filtersForm.seats" label="Seats" type="number" />
             <div class="col-span-1 flex flex-col gap-4 sm:col-span-3 sm:flex-row">
-              <button class="btn-primary flex-1" @click="applyFilters">Apply</button>
+              <button class="btn-primary flex-1" @click="applyFilters()">Apply</button>
               <button class="btn-danger flex-1" @click="resetFilters">Reset</button>
             </div>
           </div>
@@ -509,6 +508,7 @@ function resetFilters() {
             v-if="events && events.meta.total > events.meta.per_page"
             class="mt-4"
             :meta="events.meta"
+            @page-change="applyFilters"
           />
         </template>
       </Panel>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -69,8 +70,16 @@ class Organiser extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'organiser_users');
     }
 
+    /** @return HasMany<OrganiserJoinRequest, $this> */
     public function joinRequests(): HasMany
     {
         return $this->hasMany(OrganiserJoinRequest::class);
+    }
+
+    public function scopeCountUpcomingEvents(Builder $query)
+    {
+        $query->withCount([
+            'events' => fn ($query) => $query->where('events.is_published', true)->upcoming(),
+        ]);
     }
 }

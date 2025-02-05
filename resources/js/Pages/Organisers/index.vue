@@ -6,7 +6,10 @@ import { pickBy } from 'lodash'
 import qs from 'qs'
 import { CalendarIcon, DocumentIcon, DocumentTextIcon, RssIcon } from '~/@heroicons/vue/24/outline'
 
-const props = defineProps<{ venues: App.PageResource<App.Venue>; countries: App.Country[] }>()
+const props = defineProps<{
+  organisers: App.PageResource<App.Organiser>
+  countries: App.Country[]
+}>()
 
 const isLoading = ref(false)
 
@@ -24,7 +27,7 @@ const filtersForm = reactive<{
 
 const title = computed(
   () =>
-    `Venues ${props.venues.meta.current_page > 1 ? ' &bull; Page ' + props.venues.meta.current_page : ''}`,
+    `Organisers ${props.organisers.meta.current_page > 1 ? ' &bull; Page ' + props.organisers.meta.current_page : ''}`,
 )
 
 const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => {
@@ -79,10 +82,6 @@ onMounted(() => {
       if (Object.prototype.hasOwnProperty.call(filter, 'events')) {
         filtersForm.events = filter.events as number
       }
-
-      if (Object.prototype.hasOwnProperty.call(filter, 'country')) {
-        filtersForm.country = filter.country as string
-      }
     }
   }
 })
@@ -107,15 +106,8 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
     }
   }
 
-  if (filtersForm.country && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      country: filtersForm.country,
-    }
-  }
-
   router.get(
-    '/venues?' +
+    '/organisers?' +
       qs.stringify(query, {
         filter(prefix: string, value: unknown) {
           if (typeof value === 'object' && value !== null) {
@@ -164,15 +156,8 @@ function applyFilters(pageNumber: number | null = null) {
     }
   }
 
-  if (filtersForm.country && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      country: filtersForm.country,
-    }
-  }
-
   router.get(
-    '/venues?' +
+    '/organisers?' +
       qs.stringify(query, {
         filter(prefix: string, value: unknown) {
           if (typeof value === 'object' && value !== null) {
@@ -203,7 +188,6 @@ function applyFilters(pageNumber: number | null = null) {
 function resetFilters() {
   filtersForm.title = null
   filtersForm.events = null
-  filtersForm.country = null
 
   applyFilters()
 }
@@ -214,10 +198,7 @@ function resetFilters() {
     <AppHead :title />
 
     <div class="mx-auto mt-12 max-w-2xl lg:max-w-7xl">
-      <Panel
-        title="Venues"
-        subtitle="These venues are halls, rooms and places that host LAN Parties. You can view venues by country, or find an organizer that takes your fancy."
-      >
+      <Panel title="Organisers">
         <template #actions>
           <button class="btn-primary" @click="showFilters = !showFilters">
             Filters
@@ -239,28 +220,13 @@ function resetFilters() {
           </span>
         </template>
         <template #content>
-          <div
-            v-if="showFilters"
-            class="mb-4 grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-x-4"
-          >
+          <div v-if="showFilters" class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <TextInput id="title" v-model="filtersForm.title" label="Venue" />
             <TextInput
               id="events"
               v-model="filtersForm.events"
               label="Number Of Events"
               type="number"
-            />
-            <SelectInput
-              id="country"
-              v-model="filtersForm.country"
-              name="country"
-              label="Country"
-              label-prop="name"
-              value-prop="code"
-              can-clear
-              can-deselect
-              searchable
-              :options="countries"
             />
             <div class="col-span-1 flex flex-col gap-4 sm:col-span-3 sm:flex-row">
               <button class="btn-primary flex-1" @click="applyFilters()">Apply</button>
@@ -269,14 +235,14 @@ function resetFilters() {
           </div>
 
           <div
-            v-if="(venues === undefined || venues?.data?.length === 0) && !isLoading"
+            v-if="(organisers === undefined || organisers?.data?.length === 0) && !isLoading"
             class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center"
           >
             <div class="absolute inset-0 flex items-center justify-center">
               <div>
-                <p class="text-gray-500 dark:text-white">No venues found</p>
+                <p class="text-gray-500 dark:text-white">No organisers found</p>
                 <p class="mt-1 text-sm text-gray-500">
-                  We have no records of venues at the moment, please check back later.
+                  We have no records of organisers at the moment, please check back later.
                 </p>
               </div>
             </div>
@@ -289,7 +255,18 @@ function resetFilters() {
                     scope="col"
                     class="hidden cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell dark:text-white"
                   >
-                    <SortHeader label="Venue" name="title" :sort="currentSort" @sort="applySort" />
+                    <SortHeader
+                      label="Organiser"
+                      name="title"
+                      :sort="currentSort"
+                      @sort="applySort"
+                    />
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                  >
+                    Website
                   </th>
                   <th
                     scope="col"
@@ -301,12 +278,6 @@ function resetFilters() {
                       :sort="currentSort"
                       @sort="applySort"
                     />
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
-                  >
-                    Country
                   </th>
                 </tr>
               </thead>
@@ -323,8 +294,8 @@ function resetFilters() {
                 </tr>
                 <template v-else>
                   <tr
-                    v-for="(venue, index) in venues.data"
-                    :key="`venue${venue.id}`"
+                    v-for="(organiser, index) in organisers.data"
+                    :key="`organiser${organiser.id}`"
                     class="hover:bg-gray-50 dark:hover:bg-white/15"
                   >
                     <td
@@ -333,17 +304,12 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      <InertiaLink :href="route('venues.show', { venue: venue.slug })" class="link">
-                        {{ venue.title }}
+                      <InertiaLink
+                        :href="route('organisers.show', { organiser: organiser.slug })"
+                        class="link"
+                      >
+                        {{ organiser.title }}
                       </InertiaLink>
-                    </td>
-                    <td
-                      :class="[
-                        'relative px-3 py-4 text-center text-sm',
-                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
-                      ]"
-                    >
-                      <Badge :text="venue.events_count?.toString() ?? 'N/A'" />
                     </td>
                     <td
                       :class="[
@@ -351,7 +317,15 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      {{ venue?.country?.name ?? 'N/A' }}
+                      {{ organiser?.website ?? 'N/A' }}
+                    </td>
+                    <td
+                      :class="[
+                        'relative px-3 py-4 text-center text-sm',
+                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
+                      ]"
+                    >
+                      <Badge :text="organiser.events_count?.toString() ?? 'N/A'" />
                     </td>
                   </tr>
                 </template>
@@ -360,9 +334,9 @@ function resetFilters() {
           </div>
 
           <Pagination
-            v-if="venues && venues.meta.total > venues.meta.per_page"
+            v-if="organisers && organisers.meta.total > organisers.meta.per_page"
             class="mt-4"
-            :meta="venues.meta"
+            :meta="organisers.meta"
             @page-change="applyFilters"
           />
         </template>
