@@ -6,31 +6,25 @@ import { pickBy } from 'lodash'
 import qs from 'qs'
 import { CalendarIcon, DocumentIcon, DocumentTextIcon, RssIcon } from '~/@heroicons/vue/24/outline'
 
-const props = defineProps<{ events: App.PageResource<App.Event>; countries: App.Country[] }>()
+const props = defineProps<{ venues: App.PageResource<App.Venue>; countries: App.Country[] }>()
 
 const isLoading = ref(false)
 
 const showFilters = ref(false)
 
 const filtersForm = reactive<{
-  event_title: string | null
-  organiser_title: string | null
   venue_title: string | null
-  start_between: string | string[] | null
+  events: number | null
   country: string | null
-  seats: number | null
 }>({
-  event_title: null,
-  organiser_title: null,
   venue_title: null,
-  start_between: null,
+  events: null,
   country: null,
-  seats: null,
 })
 
 const title = computed(
   () =>
-    `Events ${props.events.meta.current_page > 1 ? ' &bull; Page ' + props.events.meta.current_page : ''}`,
+    `Venues ${props.venues.meta.current_page > 1 ? ' &bull; Page ' + props.venues.meta.current_page : ''}`,
 )
 
 const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => {
@@ -56,27 +50,15 @@ const currentSort = computed((): { cell: string; direction: 'asc' | 'desc' } => 
 const activeFilterCount = computed(() => {
   let count = 0
 
-  if (filtersForm.event_title) {
-    count++
-  }
-
-  if (filtersForm.organiser_title) {
-    count++
-  }
-
   if (filtersForm.venue_title) {
     count++
   }
 
-  if (filtersForm.start_between) {
+  if (filtersForm.events) {
     count++
   }
 
   if (filtersForm.country) {
-    count++
-  }
-
-  if (filtersForm.seats) {
     count++
   }
 
@@ -90,28 +72,16 @@ onMounted(() => {
     if (Object.prototype.hasOwnProperty.call(urlParams, 'filter')) {
       const filter = urlParams.filter as Record<string, unknown>
 
-      if (Object.prototype.hasOwnProperty.call(filter, 'event_title')) {
-        filtersForm.event_title = filter.event_title as string
-      }
-
-      if (Object.prototype.hasOwnProperty.call(filter, 'organiser_title')) {
-        filtersForm.organiser_title = filter.organiser_title as string
-      }
-
       if (Object.prototype.hasOwnProperty.call(filter, 'venue_title')) {
         filtersForm.venue_title = filter.venue_title as string
       }
 
-      if (Object.prototype.hasOwnProperty.call(filter, 'start_between')) {
-        filtersForm.start_between = (filter.start_between as string).split(',')
+      if (Object.prototype.hasOwnProperty.call(filter, 'events')) {
+        filtersForm.events = filter.events as number
       }
 
       if (Object.prototype.hasOwnProperty.call(filter, 'country')) {
         filtersForm.country = filter.country as string
-      }
-
-      if (Object.prototype.hasOwnProperty.call(filter, 'seats')) {
-        filtersForm.seats = filter.seats as number
       }
     }
   }
@@ -123,34 +93,17 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
     filter: null,
   }
 
-  if (filtersForm.event_title && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      event_title: filtersForm.event_title,
-    }
-  }
-
-  if (filtersForm.organiser_title && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      organiser_title: filtersForm.organiser_title,
-    }
-  }
-
   if (filtersForm.venue_title && typeof query.filter === 'object') {
     query.filter = {
       ...query.filter,
-      venue_title: filtersForm.venue_title,
+      event_title: filtersForm.venue_title,
     }
   }
 
-  if (filtersForm.start_between && typeof query.filter === 'object') {
+  if (filtersForm.events && typeof query.filter === 'object') {
     query.filter = {
       ...query.filter,
-      start_between:
-        typeof filtersForm.start_between === 'string'
-          ? filtersForm.start_between
-          : filtersForm.start_between.join(','),
+      organiser_title: filtersForm.events,
     }
   }
 
@@ -158,13 +111,6 @@ function applySort(cell: string, sort: 'asc' | 'desc') {
     query.filter = {
       ...query.filter,
       country: filtersForm.country,
-    }
-  }
-
-  if (filtersForm.seats && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      seats: filtersForm.seats,
     }
   }
 
@@ -203,20 +149,6 @@ function applyFilters() {
     filter: null,
   }
 
-  if (filtersForm.event_title && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      event_title: filtersForm.event_title,
-    }
-  }
-
-  if (filtersForm.organiser_title && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      organiser_title: filtersForm.organiser_title,
-    }
-  }
-
   if (filtersForm.venue_title && typeof query.filter === 'object') {
     query.filter = {
       ...query.filter,
@@ -224,13 +156,10 @@ function applyFilters() {
     }
   }
 
-  if (filtersForm.start_between && typeof query.filter === 'object') {
+  if (filtersForm.events && typeof query.filter === 'object') {
     query.filter = {
       ...query.filter,
-      start_between:
-        typeof filtersForm.start_between === 'string'
-          ? filtersForm.start_between
-          : filtersForm.start_between.join(','),
+      seats: filtersForm.events,
     }
   }
 
@@ -241,15 +170,8 @@ function applyFilters() {
     }
   }
 
-  if (filtersForm.seats && typeof query.filter === 'object') {
-    query.filter = {
-      ...query.filter,
-      seats: filtersForm.seats,
-    }
-  }
-
   router.get(
-    '/events?' +
+    '/vanues?' +
       qs.stringify(query, {
         filter(prefix: string, value: unknown) {
           if (typeof value === 'object' && value !== null) {
@@ -278,12 +200,9 @@ function applyFilters() {
 }
 
 function resetFilters() {
-  filtersForm.event_title = null
-  filtersForm.organiser_title = null
   filtersForm.venue_title = null
-  filtersForm.start_between = null
+  filtersForm.events = null
   filtersForm.country = null
-  filtersForm.seats = null
 
   applyFilters()
 }
@@ -294,7 +213,10 @@ function resetFilters() {
     <AppHead :title />
 
     <div class="mx-auto mt-12 max-w-2xl lg:max-w-7xl">
-      <Panel title="Events" subtitle="Upcoming Events World Wide">
+      <Panel
+        title="Venues"
+        subtitle="These venues are halls, rooms and places that host LAN Parties. You can view venues by country, or find an organizer that takes your fancy."
+      >
         <template #actions>
           <button class="btn-primary" @click="showFilters = !showFilters">
             Filters
@@ -322,13 +244,8 @@ function resetFilters() {
             v-if="showFilters"
             class="mb-4 grid grid-cols-1 space-y-4 sm:grid-cols-3 sm:space-x-4"
           >
-            <TextInput id="event_title" v-model="filtersForm.event_title" label="Event" />
-            <TextInput
-              id="organiser_title"
-              v-model="filtersForm.organiser_title"
-              label="Organiser"
-            />
             <TextInput id="venue_title" v-model="filtersForm.venue_title" label="Venue" />
+            <TextInput id="events" v-model="filtersForm.events" label="Events" type="number" />
             <SelectInput
               id="country"
               v-model="filtersForm.country"
@@ -341,14 +258,6 @@ function resetFilters() {
               searchable
               :options="countries"
             />
-            <DateInput
-              id="start_between"
-              v-model="filtersForm.start_between"
-              label="Start Between"
-              placeholder="DD/MM/YYYY - DD/MM/YYYY"
-              range
-            />
-            <TextInput id="seats" v-model="filtersForm.seats" label="Seats" type="number" />
             <div class="col-span-1 flex flex-col gap-4 sm:col-span-3 sm:flex-row">
               <button class="btn-primary flex-1" @click="applyFilters">Apply</button>
               <button class="btn-danger flex-1" @click="resetFilters">Reset</button>
@@ -356,14 +265,14 @@ function resetFilters() {
           </div>
 
           <div
-            v-if="(events === undefined || events?.data?.length === 0) && !isLoading"
+            v-if="(venues === undefined || venues?.data?.length === 0) && !isLoading"
             class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center"
           >
             <div class="absolute inset-0 flex items-center justify-center">
               <div>
-                <p class="text-gray-500 dark:text-white">No events found</p>
+                <p class="text-gray-500 dark:text-white">No venues found</p>
                 <p class="mt-1 text-sm text-gray-500">
-                  We have no records of upcoming events at the moment, please check back later.
+                  We have no records of venues at the moment, please check back later.
                 </p>
               </div>
             </div>
@@ -374,54 +283,21 @@ function resetFilters() {
                 <tr>
                   <th
                     scope="col"
-                    class="cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    class="hidden cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell dark:text-white"
                   >
-                    <SortHeader label="Event" name="title" :sort="currentSort" @sort="applySort" />
+                    <SortHeader label="Venue" name="title" :sort="currentSort" @sort="applySort" />
                   </th>
                   <th
                     scope="col"
-                    class="hidden cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell dark:text-white"
+                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                   >
-                    <SortHeader
-                      label="Organiser"
-                      name="organiser.title"
-                      :sort="currentSort"
-                      @sort="applySort"
-                    />
-                  </th>
-                  <th
-                    scope="col"
-                    class="hidden cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell dark:text-white"
-                  >
-                    <SortHeader
-                      label="Venue"
-                      name="venue.title"
-                      :sort="currentSort"
-                      @sort="applySort"
-                    />
+                    # Events
                   </th>
                   <th
                     scope="col"
                     class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
                   >
                     Country
-                  </th>
-                  <th
-                    scope="col"
-                    class="cursor-pointer px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
-                  >
-                    <SortHeader
-                      label="Start Date"
-                      name="start_date"
-                      :sort="currentSort"
-                      @sort="applySort"
-                    />
-                  </th>
-                  <th
-                    scope="col"
-                    class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
-                  >
-                    # Seats
                   </th>
                 </tr>
               </thead>
@@ -432,14 +308,14 @@ function resetFilters() {
                       <IconLoading
                         class="text-primary-500 mr-4 size-8 animate-spin dark:text-white"
                       />
-                      <span class="font-medium dark:text-white">Loading Events...</span>
+                      <span class="font-medium dark:text-white">Loading Venues...</span>
                     </div>
                   </td>
                 </tr>
                 <template v-else>
                   <tr
-                    v-for="(event, index) in events.data"
-                    :key="`event${event.id}`"
+                    v-for="(venue, index) in venues.data"
+                    :key="`venue${venue.id}`"
                     class="hover:bg-gray-50 dark:hover:bg-white/15"
                   >
                     <td
@@ -448,48 +324,9 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      <InertiaLink :href="route('events.show', { event: event.slug })" class="link">
-                        {{ event.title }}
+                      <InertiaLink :href="route('venues.show', { event: venue.slug })" class="link">
+                        {{ venue.title }}
                       </InertiaLink>
-                    </td>
-                    <td
-                      :class="[
-                        'relative hidden px-3 py-4 text-sm lg:table-cell',
-                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
-                      ]"
-                    >
-                      <InertiaLink href="#" class="link">
-                        {{ event.organiser?.title ?? 'N/A' }}
-                      </InertiaLink>
-                    </td>
-                    <td
-                      :class="[
-                        'relative hidden px-3 py-4 text-sm lg:table-cell',
-                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
-                      ]"
-                    >
-                      <InertiaLink
-                        :href="route('venues.show', { venue: event.venue?.slug })"
-                        class="link"
-                      >
-                        {{ event.venue?.title ?? 'N/A' }}
-                      </InertiaLink>
-                    </td>
-                    <td
-                      :class="[
-                        'relative px-3 py-4 text-sm',
-                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
-                      ]"
-                    >
-                      {{ event?.venue?.country?.name ?? 'N/A' }}
-                    </td>
-                    <td
-                      :class="[
-                        'relative px-3 py-4 text-sm',
-                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
-                      ]"
-                    >
-                      {{ useDayJs(event.start_date).format(useUserDateFormat) }}
                     </td>
                     <td
                       :class="[
@@ -497,7 +334,15 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      {{ event.seats }}
+                      {{ venue.upcoming_events_count }}
+                    </td>
+                    <td
+                      :class="[
+                        'relative px-3 py-4 text-sm',
+                        { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
+                      ]"
+                    >
+                      {{ venue?.country?.name ?? 'N/A' }}
                     </td>
                   </tr>
                 </template>
@@ -506,9 +351,9 @@ function resetFilters() {
           </div>
 
           <Pagination
-            v-if="events && events.meta.total > events.meta.per_page"
+            v-if="venues && venues.meta.total > venues.meta.per_page"
             class="mt-4"
-            :meta="events.meta"
+            :meta="venues.meta"
           />
         </template>
       </Panel>

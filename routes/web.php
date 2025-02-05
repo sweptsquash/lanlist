@@ -4,6 +4,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\MediaConversionController;
+use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -18,8 +19,9 @@ Route::prefix('organisers')->name('organisers.')->group(function () {
     // TODO
 });
 
-Route::prefix('venues')->name('venues.')->group(function () {
-    // TODO
+Route::prefix('venues')->name('venues.')->controller(VenueController::class)->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::get('{venue}', 'show')->name('show');
 });
 
 Route::prefix('media')->name('media.')->group(function () {

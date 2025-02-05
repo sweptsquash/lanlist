@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->double('lat')->nullable()->comment('The latitiude of the postcode');
             $table->double('lng')->nullable()->comment('The longitude of the postcode');
             $table->timestamps();

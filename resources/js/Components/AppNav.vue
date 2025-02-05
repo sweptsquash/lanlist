@@ -42,7 +42,13 @@ const data = reactive<{
       active: false,
     },
     { name: 'Organisers', href: '#', route: null, icon: BuildingOfficeIcon, active: false },
-    { name: 'Venues', href: '#', route: null, icon: MapPinIcon, active: false },
+    {
+      name: 'Venues',
+      href: route('venues.index'),
+      route: 'routes.*',
+      icon: MapPinIcon,
+      active: false,
+    },
   ],
   userNavigation: [
     {

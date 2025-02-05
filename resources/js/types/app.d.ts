@@ -165,6 +165,7 @@ declare namespace App {
     export type Venue = {
         id: number;
         title: string;
+        slug: string;
         country?: Country;
         lat: number;
         lng: number;
