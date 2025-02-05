@@ -254,7 +254,11 @@ const googleMapsLink = computed(
                     <dd
                       class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-300"
                     >
-                      <InertiaLink href="#">{{ event.organiser?.title }}</InertiaLink>
+                      <InertiaLink
+                        :href="route('organisers.show', { organiser: event.organiser.slug })"
+                      >
+                        {{ event.organiser?.title }}
+                      </InertiaLink>
                     </dd>
                   </div>
                   <div

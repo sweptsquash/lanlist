@@ -53,7 +53,7 @@ class EventController extends FrontendController
     {
         $event->load(['organiser', 'venue', 'reviews', 'media']);
 
-        return inertia('Events/view', [
+        return inertia('Events/show', [
             'event' => EventResource::make($event),
             'ogImage' => OpenGraphImage::url([
                 'title' => $event->title,
