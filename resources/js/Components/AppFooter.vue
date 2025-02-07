@@ -5,10 +5,9 @@ const navigation = {
   main: [
     { name: 'Link to us', href: route('linkus') },
     { name: 'Contact', href: route('contact.index') },
-    { name: 'Cookies', href: '#' },
-    { name: 'Useful related sites', href: '#' },
+    { name: 'Cookies', href: route('cookies') },
+    { name: 'Useful related sites', href: route('useful-sites') },
     { name: 'Licensing', href: route('licensing') },
-    { name: 'Sitemap', href: '#' },
   ],
   social: [{ name: 'GitHub', icon: GitHubIcon, href: 'https://github.com/jamesread/lanlist' }],
 }
