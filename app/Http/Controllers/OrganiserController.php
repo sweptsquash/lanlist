@@ -30,7 +30,7 @@ class OrganiserController extends FrontendController
 
     public function show(Organiser $organiser): Response
     {
-        $organiser->load(['events' => fn ($query) => $query->upcoming()]);
+        $organiser->load(['events' => fn ($query) => $query->with('venue')->upcoming()]);
 
         return inertia('Organisers/show', [
             'organiser' => OrganiserResource::make($organiser),

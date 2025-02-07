@@ -457,7 +457,10 @@ function resetFilters() {
                         { 'border-t border-gray-200 dark:border-white/15': index !== 0 },
                       ]"
                     >
-                      <InertiaLink href="#" class="link">
+                      <InertiaLink
+                        :href="route('organisers.show', { organiser: event.organiser?.slug })"
+                        class="link"
+                      >
                         {{ event.organiser?.title ?? 'N/A' }}
                       </InertiaLink>
                     </td>

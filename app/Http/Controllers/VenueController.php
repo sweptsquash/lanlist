@@ -33,7 +33,9 @@ class VenueController extends FrontendController
 
     public function show(Venue $venue): Response
     {
-        $venue->load(['events' => fn ($query) => $query->upcoming()]);
+        $venue
+            ->load(['events' => fn ($query) => $query->with('organiser')->upcoming()->limit(10)])
+            ->loadCount(['events' => fn ($query) => $query->upcoming()]);
 
         return inertia('Venues/show', [
             'venue' => VenueResource::make($venue),
