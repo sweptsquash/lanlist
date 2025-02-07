@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { LIcon, LMap, LMarker, LTileLayer, LTooltip } from '@vue-leaflet/vue-leaflet'
-import type { PointExpression } from '~/@types/leaflet'
+import { AdvancedMarker, GoogleMap } from 'vue3-google-map'
 
 defineProps<{
   events: Array<Array<App.Event>>
@@ -12,15 +11,29 @@ const mapCenter = {
   lng: 0.1278,
 }
 
-const zoom = ref(5)
+const zoom = ref(3)
 
-const attribution =
-  '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-
-const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCenter.lng])
+const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+const googleMapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
 
 function navigateToEvent(event: App.Event) {
   router.visit(route('events.show', { event: event.slug }))
+}
+
+function markerOptions(event: App.Event) {
+  const eventContent = document.createElement('div')
+  eventContent.classList.add('map-marker')
+
+  const eventFlag = document.createElement('img')
+  eventFlag.src = event.organiser?.favicon?.url ?? ''
+
+  eventContent.appendChild(eventFlag)
+
+  return {
+    position: { lat: event.venue?.lat ?? 0, lng: event.venue?.lng ?? 0 },
+    content: eventContent,
+    title: event.title,
+  }
 }
 </script>
 
@@ -40,34 +53,22 @@ function navigateToEvent(event: App.Event) {
             <div
               class="min-h-[400px] min-w-full overflow-hidden rounded-lg bg-white ring-1 shadow ring-black/5 max-lg:rounded-t-[2rem] lg:min-h-auto lg:rounded-tl-[2rem] dark:bg-gray-800 dark:ring-white/15"
             >
-              <LMap
-                v-model:zoom="zoom"
-                class="z-0 w-full bg-gray-50"
-                :center="coordinateCenter"
-                :min-zoom="0"
-                :max-zoom="18"
-                :use-global-leaflet="false"
+              <GoogleMap
+                :api-key="googleAPIKey"
+                :map-id="googleMapId"
+                class="z-0 h-[516px] w-full bg-gray-50"
+                :center="mapCenter"
+                :zoom
               >
-                <LTileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  layer-type="base"
-                  name="OpenStreetMap"
-                  :attribution
-                />
                 <template v-for="(eventsInMonth, month) in events" :key="month">
-                  <LMarker
-                    v-for="event in eventsInMonth"
-                    :key="event.id"
-                    :lat-lng="[event.venue?.lat ?? 0, event.venue?.lng ?? 0]"
-                    @click="navigateToEvent(event)"
-                  >
-                    <LTooltip>{{ event.venue?.title }}</LTooltip>
-                    <LIcon :icon-size="[32, 32]">
-                      <img :src="event.organiser?.favicon?.url" class="h-auto w-full" />
-                    </LIcon>
-                  </LMarker>
+                  <template v-for="event in eventsInMonth" :key="event.id">
+                    <AdvancedMarker
+                      :options="markerOptions(event)"
+                      @click="navigateToEvent(event)"
+                    />
+                  </template>
                 </template>
-              </LMap>
+              </GoogleMap>
             </div>
           </div>
           <div class="flex p-px lg:col-span-2">

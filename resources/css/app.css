@@ -1,5 +1,4 @@
 @import '@vuepic/vue-datepicker/dist/main.css';
-@import 'leaflet/dist/leaflet.css';
 @import 'floating-vue/dist/style.css';
 
 @import "tailwindcss";
@@ -76,34 +75,16 @@ h6 {
     }
 }
 
-.leaflet-div-icon {
-    @apply p-1 rounded shadow relative border-black/25;
-}
+.map-marker {
+    @apply p-0.5 rounded shadow relative border-2 bg-white border-black/25;
 
-.leaflet-div-icon::before {
-    position:absolute;
-    content: '';
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 15px 10px 0 10px;
-    border-color: #000 transparent transparent transparent;
-    transform: rotate(0deg);
-    top: 100%;
-    left: 5px;
-}
+    &:hover, &:focus {
+        @apply border-indigo-500;
+    }
 
-.leaflet-div-icon::after {
-    position:absolute;
-    content: '';
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 15px 10px 0 10px;
-    border-color: #FFF transparent transparent transparent;
-    transform: rotate(0deg);
-    top: 100%;
-    left: 5px;
+    & > img {
+        @apply w-5 h-5;
+    }
 }
 
 .required::after {

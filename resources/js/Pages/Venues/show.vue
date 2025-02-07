@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-import { LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet'
 import { pickBy } from 'lodash'
 import qs from 'qs'
-import type { LatLngExpression, PointExpression } from '~/@types/leaflet'
+import { AdvancedMarker, GoogleMap } from 'vue3-google-map'
 
 const props = defineProps<{ venue: App.Venue }>()
 
-const zoom = ref(15)
+const markerOptions = computed(() => {
+  return {
+    position: { lat: props.venue?.lat ?? 0, lng: props.venue?.lng ?? 0 },
+    title: props.venue.title,
+  }
+})
 
-const coordinates = computed<LatLngExpression>(() => [props.venue?.lat ?? 0, props.venue?.lng ?? 0])
+const zoom = ref(10)
 
-const coordinateCenter = computed<PointExpression>(() => [
-  props.venue?.lat ?? 0,
-  props.venue?.lng ?? 0,
-])
+const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+const googleMapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
 
 const googleMapsLink = computed(
   () =>
@@ -57,21 +59,15 @@ function moreEvents() {
         <template #content>
           <div class="grid grid-cols-1 space-y-4">
             <div>
-              <LMap
-                v-model:zoom="zoom"
-                class="z-0 h-100 w-full bg-gray-50"
-                :center="coordinateCenter"
-                :min-zoom="0"
-                :max-zoom="18"
-                :use-global-leaflet="false"
+              <GoogleMap
+                :api-key="googleAPIKey"
+                :map-id="googleMapId"
+                class="z-0 h-[516px] w-full bg-gray-50"
+                :center="{ lat: venue?.lat ?? 0, lng: venue?.lng ?? 0 }"
+                :zoom
               >
-                <LTileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  layer-type="base"
-                  name="OpenStreetMap"
-                />
-                <LMarker :lat-lng="coordinates" />
-              </LMap>
+                <AdvancedMarker :options="markerOptions" />
+              </GoogleMap>
             </div>
             <div>
               <a

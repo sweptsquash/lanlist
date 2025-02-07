@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import socialBanner from '@/../images/social-banner.png'
-import { LMap, LMarker, LTileLayer } from '@vue-leaflet/vue-leaflet'
 import { BedIcon, BeerIcon, CigaretteIcon, NetworkIcon, ShowerHeadIcon } from 'lucide-vue-next'
 import type { FunctionalComponent } from 'vue'
-import type { LatLngExpression, PointExpression } from '~/@types/leaflet'
+import { AdvancedMarker, GoogleMap } from 'vue3-google-map'
 
 const props = defineProps<{ event: App.Event; ogImage: string | null }>()
 
@@ -43,17 +42,26 @@ const facilities = computed(() => {
   return data
 })
 
-const zoom = ref(15)
+const markerOptions = computed(() => {
+  const eventContent = document.createElement('div')
+  eventContent.classList.add('map-marker')
 
-const coordinates = computed<LatLngExpression>(() => [
-  props.event.venue?.lat ?? 0,
-  props.event.venue?.lng ?? 0,
-])
+  const eventFlag = document.createElement('img')
+  eventFlag.src = props.event.organiser?.favicon?.url ?? ''
 
-const coordinateCenter = computed<PointExpression>(() => [
-  props.event.venue?.lat ?? 0,
-  props.event.venue?.lng ?? 0,
-])
+  eventContent.appendChild(eventFlag)
+
+  return {
+    position: { lat: props.event.venue?.lat ?? 0, lng: props.event.venue?.lng ?? 0 },
+    content: eventContent,
+    title: props.event.title,
+  }
+})
+
+const zoom = ref(10)
+
+const googleAPIKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+const googleMapId = import.meta.env.VITE_GOOGLE_MAPS_MAP_ID
 
 const googleMapsLink = computed(
   () =>
@@ -204,21 +212,15 @@ const googleMapsLink = computed(
                 itemtype="https://schema.org/Place"
               >
                 <div>
-                  <LMap
-                    v-model:zoom="zoom"
-                    class="z-0 h-52 w-full bg-gray-50"
-                    :center="coordinateCenter"
-                    :min-zoom="0"
-                    :max-zoom="18"
-                    :use-global-leaflet="false"
+                  <GoogleMap
+                    :api-key="googleAPIKey"
+                    :map-id="googleMapId"
+                    class="z-0 h-[516px] w-full bg-gray-50"
+                    :center="{ lat: event.venue?.lat ?? 0, lng: event.venue?.lng ?? 0 }"
+                    :zoom
                   >
-                    <LTileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      layer-type="base"
-                      name="OpenStreetMap"
-                    />
-                    <LMarker :lat-lng="coordinates" />
-                  </LMap>
+                    <AdvancedMarker :options="markerOptions" />
+                  </GoogleMap>
                 </div>
                 <div>
                   <meta itemprop="name" :content="event.venue?.title" />
