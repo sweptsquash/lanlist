@@ -72,12 +72,13 @@ function sendEmail($recipient, $content, $subject = 'Notification', $includeStan
             'password' => SMTP_PASS,
         ]);
 
-        $headers = [
-            'From' => '"'.SITE_TITLE.'" <'.EMAIL_ADDRESS.'>',
-            'To' => '<'.$recipient.'>',
+        $headers = array(
+            'From' => '"' . SITE_TITLE . '" <' . EMAIL_ADDRESS . '>',
+            'To' => '<' . $recipient . '>',
+            'Reply-To' => '"' . EMAIL_REPLY_TO_NAME . '" <' . EMAIL_REPLY_TO_ADDRESS . '>',
             'Subject' => $subject,
             'Content-Type' => 'text/html',
-        ];
+        );
 
         $smtpResult = $smtp->send('<'.$recipient.'>', $headers, $content);
 
@@ -128,7 +129,7 @@ function getOrganizerLogoUrl($organizerId)
     return $baseUrl.$organizerId.'.jpg';
 }
 
-function floatToMoney($value, $currency = '£')
+function floatToMoney($value, $currency = 'ï¿½')
 {
     if (empty($value) || $value == 0) {
         return '?';
@@ -424,4 +425,36 @@ function outputJson($v)
     header('Content-Type: application/json');
 
     echo json_encode($v);
+}
+
+function getGeoIpCountry() {
+    $country = 'United Kingdom';
+
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+        $country = geoip_country_name_by_name($ip);
+    }
+
+    return $country;
+}
+
+function canEditEvent($eventOrganizerId) {
+    if (!Session::isLoggedIn()) {
+        return false;
+    }
+
+    if (empty($eventOrganizerId)) {
+        return false;
+    }
+
+    if (Session::getUser()->hasPriv('MODERATE_EVENTS')) {
+        return true;
+    }
+
+    if (Session::getUser()->getData('organization') == $eventOrganizerId) {
+        return true;
+    }
+
+    return false;
 }

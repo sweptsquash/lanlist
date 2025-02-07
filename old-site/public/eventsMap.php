@@ -33,7 +33,7 @@ use libAllure\Session;
 <?php startSidebar(); ?>
 
 <script type = "text/javascript">
-renderMap();
+renderMap("<?php echo getGeoIpCountry(); ?>");
 
 window.addEventListener('DOMContentLoaded', () => {
 <?php echo jsForEvents(); ?>
