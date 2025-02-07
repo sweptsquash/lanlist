@@ -5,7 +5,7 @@ use App\Models\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('licensing.php', '/licensing', 301); // TODO
+Route::redirect('licensing.php', '/licensing', 301);
 
 Route::redirect('linkus.php', '/link-us', 301); // TODO
 
@@ -27,9 +27,9 @@ Route::redirect('eventsMap.php', '/', 301);
 
 Route::redirect('eventsList.php', '/events', 301);
 
-Route::redirect('listVenues.php', '/venues', 301); // TODO
+Route::redirect('listVenues.php', '/venues', 301);
 
-Route::redirect('listOrganizers.php', '/organisers', 301); // TODO
+Route::redirect('listOrganizers.php', '/organisers', 301);
 
 Route::get('viewEvent.php', function (Request $request) {
     $event = Event::firstOrFail($request->query('id'));

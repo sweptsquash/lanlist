@@ -29,6 +29,12 @@ class OrganiserResource extends JsonResource
             'events_count' => $this->whenCounted('events_count'),
             'users' => UserResource::collection($this->whenLoaded('users')),
             'requests' => OrganiserJoinRequestResource::collection($this->whenLoaded('joinRequests')),
+            'logo' => $this->whenLoaded('media', function () {
+                return MediaResource::make($this->getFirstMedia('logo'));
+            }),
+            'favicon' => $this->whenLoaded('media', function () {
+                return MediaResource::make($this->getFirstMedia('favicon'));
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

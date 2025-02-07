@@ -15,6 +15,7 @@ declare module 'vue' {
     Badge: typeof import('./../Components/Badge.vue')['default']
     BaseInput: typeof import('./../Components/Input/BaseInput.vue')['default']
     CheckBox: typeof import('./../Components/Input/CheckBox.vue')['default']
+    CodeBlock: typeof import('./../Components/CodeBlock.vue')['default']
     DateInput: typeof import('./../Components/Input/DateInput.vue')['default']
     EmailInput: typeof import('./../Components/Input/EmailInput.vue')['default']
     HeaderSection: typeof import('./../Components/HeaderSection.vue')['default']

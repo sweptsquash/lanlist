@@ -33,7 +33,7 @@ const imageUrl = computed(() => {
 
 <template>
   <div
-    class="relative isolate -mx-4 -mt-4 mb-4 overflow-hidden bg-gray-900 px-6 py-24 sm:py-32 lg:px-8"
+    class="relative isolate -mx-4 -mt-4 mb-4 overflow-hidden bg-gray-200 px-6 py-24 sm:py-32 lg:px-8 dark:bg-gray-900"
   >
     <img
       v-if="imageUrl"

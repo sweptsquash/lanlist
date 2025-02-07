@@ -39,9 +39,8 @@ function moreEvents() {
     <div class="mx-auto mt-12 max-w-2xl space-y-4 lg:max-w-7xl">
       <Panel title="Organiser Details">
         <template #content>
-          <!-- TODO -->
           <img
-            src="https://lanlist.info/resources/images/organizer-logos/329.jpg"
+            :src="organiser.logo?.url"
             class="mx-auto mb-6 h-auto max-w-full object-cover sm:max-w-[40%]"
           />
 

@@ -3,11 +3,11 @@ import { GitHubIcon } from 'vue3-simple-icons'
 
 const navigation = {
   main: [
-    { name: 'Link to us', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Link to us', href: route('linkus') },
+    { name: 'Contact', href: route('contact.index') },
     { name: 'Cookies', href: '#' },
     { name: 'Useful related sites', href: '#' },
-    { name: 'Licensing', href: '#' },
+    { name: 'Licensing', href: route('licensing') },
     { name: 'Sitemap', href: '#' },
   ],
   social: [{ name: 'GitHub', icon: GitHubIcon, href: 'https://github.com/jamesread/lanlist' }],

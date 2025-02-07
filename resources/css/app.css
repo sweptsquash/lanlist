@@ -37,7 +37,7 @@ h6 {
 }
 
 .link {
-    @apply text-indigo-400 hover:underline hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white;
+    @apply text-indigo-400 underline decoration-dotted underline-offset-4 hover:text-indigo-700 dark:text-gray-300 dark:hover:text-white;
 }
 
 [class*='btn-']:not(.btn-group) {
@@ -382,5 +382,35 @@ label.error {
 
 .multiselect-spacer {
   @apply h-9 box-content;
+}
+
+.with-line-numbers {
+    @apply flex;
+
+    & > code {
+        counter-reset: line;
+        position: relative;
+
+        @apply text-[13px];
+
+        & >  .line {
+            counter-increment: line;
+            margin-left: calc(var(--spacing)* 9);
+
+            @apply isolate block not-last:min-h-[11h];
+
+            &::before {
+                content: counter(line);
+                width: calc(var(--spacing)* 6);
+                text-align: right;
+                -webkit-user-select: none;
+                user-select: none;
+                font-family: var(--font-plex-mono);
+                display: inline-block;
+                position: absolute;
+                left: 0;
+            }
+        }
+    }
 }
 

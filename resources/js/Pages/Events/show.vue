@@ -244,9 +244,8 @@ const googleMapsLink = computed(
           <Panel v-if="event.organiser" title="Organiser">
             <template #content>
               <div>
-                <!-- TODO -->
                 <img
-                  src="https://lanlist.info/resources/images/organizer-logos/329.jpg"
+                  :src="event.organiser?.logo?.url"
                   class="mx-auto h-auto max-w-[90%] object-cover"
                 />
                 <dl class="divide-y divide-gray-300 dark:divide-white/15">

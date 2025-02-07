@@ -27,4 +27,22 @@ class OrganiserFactory extends Factory
             'assumed_stale_at' => fake()->dateTime(),
         ];
     }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (\App\Models\Organiser $organiser) {
+            $organiser
+                ->addMedia(base_path('public/android-icon-48x48.png'))
+                ->preservingOriginal()
+                ->toMediaCollection('favicon');
+
+            $organiser
+                ->addMedia(resource_path('images/lanlist.png'))
+                ->preservingOriginal()
+                ->toMediaCollection('logo');
+        });
+    }
 }

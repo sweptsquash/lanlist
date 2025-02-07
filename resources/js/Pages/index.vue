@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { LIcon, LMap, LMarker, LTileLayer, LTooltip } from '@vue-leaflet/vue-leaflet'
-import { GoogleMap } from 'vue3-google-map'
-import type { LatLngExpression, PointExpression } from '~/@types/leaflet'
+import type { PointExpression } from '~/@types/leaflet'
 
 defineProps<{
   events: Array<Array<App.Event>>
+  featured: Array<App.Organiser>
 }>()
 
 const mapCenter = {
@@ -17,11 +17,11 @@ const zoom = ref(5)
 const attribution =
   '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 
-const googleMapApi = null
-
-const coordinates = computed<LatLngExpression>(() => [mapCenter.lat, mapCenter.lng])
-
 const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCenter.lng])
+
+function navigateToEvent(event: App.Event) {
+  router.visit(route('events.show', { event: event.slug }))
+}
 </script>
 
 <template>
@@ -40,9 +40,7 @@ const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCent
             <div
               class="min-h-[400px] min-w-full overflow-hidden rounded-lg bg-white ring-1 shadow ring-black/5 max-lg:rounded-t-[2rem] lg:min-h-auto lg:rounded-tl-[2rem] dark:bg-gray-800 dark:ring-white/15"
             >
-              <GoogleMap v-if="googleMapApi" :api-key="googleMapApi" :center="mapCenter" :zoom />
               <LMap
-                v-else
                 v-model:zoom="zoom"
                 class="z-0 w-full bg-gray-50"
                 :center="coordinateCenter"
@@ -56,15 +54,19 @@ const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCent
                   name="OpenStreetMap"
                   :attribution
                 />
-                <LMarker :lat-lng="coordinates" @click="console.log('You clicked me!')">
-                  <LTooltip>London</LTooltip>
-                  <LIcon :icon-size="[32, 32]">
-                    <img
-                      src="https://lanlist.info/resources/images/organizer-favicons/329.png"
-                      class="h-auto w-full"
-                    />
-                  </LIcon>
-                </LMarker>
+                <template v-for="(eventsInMonth, month) in events" :key="month">
+                  <LMarker
+                    v-for="event in eventsInMonth"
+                    :key="event.id"
+                    :lat-lng="[event.venue?.lat ?? 0, event.venue?.lng ?? 0]"
+                    @click="navigateToEvent(event)"
+                  >
+                    <LTooltip>{{ event.venue?.title }}</LTooltip>
+                    <LIcon :icon-size="[32, 32]">
+                      <img :src="event.organiser?.favicon?.url" class="h-auto w-full" />
+                    </LIcon>
+                  </LMarker>
+                </template>
               </LMap>
             </div>
           </div>
@@ -132,7 +134,9 @@ const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCent
           <p class="mt-6 mb-8 text-lg/8 dark:text-gray-300">
             Simply create your account and list your event today. It's that simple.
           </p>
-          <a href="#" class="btn-primary">Register Today</a>
+          <InertiaLink :href="route('auth.register')" class="btn-primary">
+            Register Today
+          </InertiaLink>
         </div>
       </div>
     </div>
@@ -142,59 +146,24 @@ const coordinateCenter = computed<PointExpression>(() => [mapCenter.lat, mapCent
         <div
           class="-mx-6 grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:rounded-2xl md:grid-cols-3"
         >
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/transistor-logo-gray-900.svg"
-              alt="Transistor"
-              width="158"
-              height="48"
-            />
-          </div>
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/reform-logo-gray-900.svg"
-              alt="Reform"
-              width="158"
-              height="48"
-            />
-          </div>
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/tuple-logo-gray-900.svg"
-              alt="Tuple"
-              width="158"
-              height="48"
-            />
-          </div>
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/laravel-logo-gray-900.svg"
-              alt="Laravel"
-              width="158"
-              height="48"
-            />
-          </div>
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/savvycal-logo-gray-900.svg"
-              alt="SavvyCal"
-              width="158"
-              height="48"
-            />
-          </div>
-          <div class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10">
-            <img
-              class="max-h-12 w-full object-contain"
-              src="https://tailwindui.com/plus/img/logos/158x48/statamic-logo-gray-900.svg"
-              alt="Statamic"
-              width="158"
-              height="48"
-            />
+          <div
+            v-for="(organiser, key) in featured"
+            :key="`organiser${key}`"
+            class="bg-gray-400/5 p-6 sm:p-10 dark:bg-white/10"
+          >
+            <InertiaLink
+              :href="route('organisers.show', { organiser: organiser.slug })"
+              :title="organiser.title"
+              class="opacity-60 hover:opacity-100"
+            >
+              <img
+                class="max-h-12 w-full object-contain"
+                :src="organiser.logo?.url"
+                :alt="organiser.title"
+                width="158"
+                height="48"
+              />
+            </InertiaLink>
           </div>
         </div>
       </div>
