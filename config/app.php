@@ -28,6 +28,8 @@ return [
 
     'version' => '1.0.0',
 
+    'admin' => env('APP_ADMIN', 'mailer@lanlist.info'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

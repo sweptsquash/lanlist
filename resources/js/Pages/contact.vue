@@ -6,12 +6,15 @@ const form = useForm({
   message: null,
 })
 
-// TODO Has Error
-
-// TODO Was Successful
+const isSuccessful = ref(false)
 
 function handleSubmit() {
-  // TODO Submit
+  form.post(route('contact.store'), {
+    preserveScroll: true,
+    onSuccess: () => {
+      isSuccessful.value = true
+    },
+  })
 }
 </script>
 
@@ -29,19 +32,42 @@ function handleSubmit() {
             </a>
             .
           </p>
-          <Alert type="danger" class="mb-4">
+          <Alert v-if="isSuccessful" type="success" class="mb-4">
             <template #message>Testing</template>
           </Alert>
-          <form class="space-y-6" @submit.prevent="handleSubmit">
-            <TextInput id="name" v-model="form.name" label="Name" required />
-            <EmailInput id="email" v-model="form.email" label="Email" required />
-            <TextInput id="subject" v-model="form.subject" label="Subject" required />
+          <form v-else class="space-y-6" @submit.prevent="handleSubmit">
+            <TextInput
+              id="name"
+              v-model="form.name"
+              label="Name"
+              required
+              :is-valid="!form.errors.name"
+              :error="form.errors.name"
+            />
+            <EmailInput
+              id="email"
+              v-model="form.email"
+              label="Email"
+              required
+              :is-valid="!form.errors.email"
+              :error="form.errors.email"
+            />
+            <TextInput
+              id="subject"
+              v-model="form.subject"
+              label="Subject"
+              required
+              :is-valid="!form.errors.subject"
+              :error="form.errors.subject"
+            />
             <TextareaInput
               id="message"
               v-model="form.message"
               label="Message"
               :rows="10"
               required
+              :is-valid="!form.errors.message"
+              :error="form.errors.message"
             />
             <button type="submit" class="btn-primary w-full text-center">Send</button>
           </form>

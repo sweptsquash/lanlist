@@ -72,13 +72,13 @@ function sendEmail($recipient, $content, $subject = 'Notification', $includeStan
             'password' => SMTP_PASS,
         ]);
 
-        $headers = array(
-            'From' => '"' . SITE_TITLE . '" <' . EMAIL_ADDRESS . '>',
-            'To' => '<' . $recipient . '>',
-            'Reply-To' => '"' . EMAIL_REPLY_TO_NAME . '" <' . EMAIL_REPLY_TO_ADDRESS . '>',
+        $headers = [
+            'From' => '"'.SITE_TITLE.'" <'.EMAIL_ADDRESS.'>',
+            'To' => '<'.$recipient.'>',
+            'Reply-To' => '"'.EMAIL_REPLY_TO_NAME.'" <'.EMAIL_REPLY_TO_ADDRESS.'>',
             'Subject' => $subject,
             'Content-Type' => 'text/html',
-        );
+        ];
 
         $smtpResult = $smtp->send('<'.$recipient.'>', $headers, $content);
 
@@ -427,7 +427,8 @@ function outputJson($v)
     echo json_encode($v);
 }
 
-function getGeoIpCountry() {
+function getGeoIpCountry()
+{
     $country = 'United Kingdom';
 
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -439,8 +440,9 @@ function getGeoIpCountry() {
     return $country;
 }
 
-function canEditEvent($eventOrganizerId) {
-    if (!Session::isLoggedIn()) {
+function canEditEvent($eventOrganizerId)
+{
+    if (! Session::isLoggedIn()) {
         return false;
     }
 
