@@ -7,6 +7,15 @@ declare namespace App {
 
     export type ShowersEnum = 'unknown' | 'not_at_venue' | 'available_at_venue'
 
+    export type ConnectionService = {
+        name: string
+        icon: FunctionalComponent
+        route: string
+        enabled: boolean
+        connected: boolean
+        color: string
+    }
+
     export type Country = {
         id: number;
         code: string;

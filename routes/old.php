@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('licensing.php', '/licensing', 301);
 
-Route::redirect('linkus.php', '/link-us', 301); // TODO
+Route::redirect('linkus.php', '/link-us', 301);
 
-Route::redirect('contact.php', '/contact', 301); // TODO
+Route::redirect('contact.php', '/contact', 301);
 
-Route::redirect('cookies.php', '/cookies', 301); // TODO
+Route::redirect('cookies.php', '/cookies', 301);
 
-Route::redirect('usefulRelatedSites.php', '/useful-related-sites', 301); // TODO
+Route::redirect('usefulRelatedSites.php', '/useful-related-sites', 301);
 
 Route::redirect('login.php', '/login', 301);
 

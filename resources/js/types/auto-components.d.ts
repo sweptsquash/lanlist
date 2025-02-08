@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AccountTabs: typeof import('./../Components/Partial/AccountTabs.vue')['default']
     Alert: typeof import('./../Components/Alert.vue')['default']
     AppFooter: typeof import('./../Components/AppFooter.vue')['default']
     AppHead: typeof import('./../Components/AppHead.vue')['default']
@@ -22,6 +23,7 @@ declare module 'vue' {
     IconLoading: typeof import('./../Components/Icons/IconLoading.vue')['default']
     InertiaHead: typeof import('@inertiajs/vue3')['Head']
     InertiaLink: typeof import('@inertiajs/vue3')['Link']
+    ModalConfirm: typeof import('./../Components/ModalConfirm.vue')['default']
     Pagination: typeof import('./../Components/Pagination.vue')['default']
     Panel: typeof import('./../Components/Panel.vue')['default']
     PasswordInput: typeof import('./../Components/Input/PasswordInput.vue')['default']

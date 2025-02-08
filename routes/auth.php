@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Account\AccountConnectionsController;
+use App\Http\Controllers\Account\AccountDetailController;
+use App\Http\Controllers\Account\AccountSecurityController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\DiscordAuthController;
@@ -64,5 +67,20 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::prefix('twitch')->name('twitch.')->controller(TwitchAuthController::class)->group(function () {
         Route::get('redirect', 'index')->name('redirect');
         Route::get('callback', 'store')->name('callback');
+    });
+});
+
+Route::middleware('auth')->prefix('account')->name('account.')->controller(AccountDetailController::class)->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::put('', 'update')->name('update');
+
+    Route::prefix('security')->name('security.')->controller(AccountSecurityController::class)->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::put('', 'update')->name('update');
+    });
+
+    Route::prefix('connections')->name('connections.')->controller(AccountConnectionsController::class)->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::delete('', 'destroy')->name('destroy');
     });
 });

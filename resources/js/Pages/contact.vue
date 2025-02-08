@@ -33,7 +33,9 @@ function handleSubmit() {
             .
           </p>
           <Alert v-if="isSuccessful" type="success" class="mb-4">
-            <template #message>Testing</template>
+            <template #message>
+              Thank you for reaching out to us, we'll get back to you within 2 - 3 business days.
+            </template>
           </Alert>
           <form v-else class="space-y-6" @submit.prevent="handleSubmit">
             <TextInput

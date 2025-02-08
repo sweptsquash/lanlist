@@ -61,8 +61,8 @@ const data = reactive<{
       name: 'Settings',
       display: true,
       method: 'get',
-      route: null,
-      href: '#',
+      route: 'account.*',
+      href: route('account.index'),
       current: false,
     },
     {

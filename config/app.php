@@ -30,6 +30,9 @@ return [
 
     'admin' => env('APP_ADMIN', 'mailer@lanlist.info'),
 
+    'old_prefix_salt' => env('APP_OLD_PREFIX_SALT'),
+    'old_suffix_salt' => env('APP_OLD_SUFFIX_SALT'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

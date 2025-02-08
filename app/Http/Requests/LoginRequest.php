@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -54,11 +56,24 @@ class LoginRequest extends FormRequest
         $fieldType = filter_var($this->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
         if (! Auth::attempt([$fieldType => $this->username, ...$this->only('password')], $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+            /** @var ?User $user */
+            $user = User::firstWhere(function ($query) use ($fieldType) {
+                $query->where($fieldType, $this->username);
+            });
 
-            throw ValidationException::withMessages([
-                'username' => __('auth.failed'),
-            ]);
+            $oldPass = hash('sha1', config('app.old_prefix_salt').$this->password.config('app.old_suffix_salt'));
+
+            if (! $user || $user->password !== $oldPass) {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'username' => __('auth.failed'),
+                ]);
+            }
+
+            $user->update(['password' => Hash::make($this->password)]);
+
+            $this->authenticate();
         }
 
         RateLimiter::clear($this->throttleKey());
