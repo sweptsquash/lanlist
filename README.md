@@ -89,9 +89,3 @@ Automated Scripts
 - `ide-helper:meta` - [PhpStorm Meta file](https://github.com/barryvdh/laravel-ide-helper#phpstorm-meta-for-container-instances)
 
 **Note:** `ide-helper:generate` `ide-helper:meta` and `doc:models` are always executed on `composer update`.
-
-
-## Vectors used in Logo
-- https://www.vecteezy.com/png/23369057-big-joystick-for-gaming-gaming-scifi
-- https://www.vecteezy.com/png/23369058-fat-mouse-gamers-love-to-use-gaming-scifi
-- https://www.vecteezy.com/photo/36788311-ai-generated-professional-esport-gamers-and-players-have-never-been-able-to-get-the-attention-of-so-many-players
