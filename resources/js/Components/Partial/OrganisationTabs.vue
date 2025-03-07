@@ -3,24 +3,19 @@ const tabs = computed<{ name: string; href: string; current: boolean; disabled?:
   () => {
     return [
       {
-        name: 'Account Details',
-        href: route('account.index'),
-        current: current('account.index'),
-      },
-      {
-        name: 'Account Security',
-        href: route('account.security.index'),
-        current: current('account.security.index'),
-      },
-      {
-        name: 'Connections',
-        href: route('account.connections.index'),
-        current: current('account.connections.*'),
-      },
-      {
-        name: 'Organisation',
+        name: 'Organisation Details',
         href: route('account.organisation.index'),
         current: current('account.organisation.*'),
+      },
+      {
+        name: 'Organisation Members',
+        href: '#',
+        current: false,
+      },
+      {
+        name: 'Organisation Settings',
+        href: '#',
+        current: false,
       },
     ]
   },
@@ -34,7 +29,7 @@ function changeTab(eventTarget: EventTarget | null) {
 </script>
 
 <template>
-  <div class="mt-20 mb-5">
+  <div class="mt-4 mb-5">
     <div class="sm:hidden">
       <label for="tabs" class="sr-only">Select a tab</label>
       <select id="tabs" name="tabs" class="form-input" @change="(e) => changeTab(e.target)">

@@ -27,6 +27,8 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'password_changed_at' => $this->password_changed_at,
             'last_active_at' => $this->last_active_at,
+            'organiser' => OrganiserResource::make($this->whenLoaded('organiser')),
+            'country' => CountryResource::make($this->whenLoaded('country')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

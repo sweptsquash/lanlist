@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\OrganiserPublishedScope;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,6 +17,7 @@ use Spatie\Sluggable\SlugOptions;
 /**
  * @mixin IdeHelperOrganiser
  */
+#[ScopedBy(OrganiserPublishedScope::class)]
 class Organiser extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\OrganiserFactory> */
@@ -55,7 +58,7 @@ class Organiser extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')->singleFile();
-        $this->addMediaCollection('favicon')->singleFile();
+        $this->addMediaCollection('favicon')->singleFile(); // TODO: Provide a fallback icon
     }
 
     /** @return HasMany<Event, $this> */

@@ -8,7 +8,7 @@ withDefaults(
     placeholder?: string
     required?: boolean
     modelValue: string | number | null
-    options: { [key: string]: string | number | null }[]
+    options: unknown[]
     valueProp?: string
     captionProp?: string
     labelProp?: string

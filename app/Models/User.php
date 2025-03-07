@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -34,6 +35,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
+        'country_id',
         'username',
         'email',
         'password',
@@ -95,10 +97,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         );
     }
 
-    /** @return BelongsTo<Organiser, $this> */
-    public function organiser(): BelongsTo
+    /** @return HasOneThrough<Organiser, OrganiserUser, $this> */
+    public function organiser(): HasOneThrough
     {
-        return $this->belongsTo(Organiser::class);
+        return $this->hasOneThrough(Organiser::class, OrganiserUser::class, 'user_id', 'id', 'id', 'organiser_id');
     }
 
     /** @return HasMany<Event, $this> */

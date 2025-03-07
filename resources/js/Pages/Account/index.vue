@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-defineProps<{ timezones: { id: string; name: string }[] }>()
+defineProps<{ timezones: { id: string; name: string }[]; countries: App.Country[] }>()
 
 const status = computed(() => usePage().props.notification?.body)
 
@@ -16,6 +16,7 @@ const dateFormats = computed(() =>
 const form = useForm(() => ({
   username: useUser.value?.username ?? null,
   email: useUser.value?.email ?? null,
+  country: useUser.value?.country?.id ?? null,
   date_format: useUser.value?.date_format ?? null,
   timezone: useUser.value?.timezone ?? null,
 }))
@@ -43,7 +44,7 @@ function updateAccount() {
             </template>
           </Alert>
 
-          <form class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <form class="grid grid-cols-1 gap-4 sm:grid-cols-2" @submit.prevent="updateAccount">
             <TextInput id="username" v-model="form.username" label="Username" disabled />
             <EmailInput
               id="email"
@@ -52,6 +53,17 @@ function updateAccount() {
               required
               :is-valid="!form.errors.email"
               :error="form.errors.email"
+            />
+            <SelectInput
+              id="country"
+              v-model="form.country"
+              name="country"
+              label="Country"
+              value-prop="id"
+              label-prop="name"
+              :options="countries"
+              :is-valid="!form.errors.country"
+              :error="form.errors.country"
             />
             <SelectInput
               id="timezones"
@@ -81,7 +93,6 @@ function updateAccount() {
                   { 'opacity-25': form.processing },
                 ]"
                 :disabled="form.processing"
-                @click.prevent="updateAccount"
               >
                 <IconLoading v-if="form.processing" class="mr-2 h-5 w-5 animate-spin text-white" />
                 Update

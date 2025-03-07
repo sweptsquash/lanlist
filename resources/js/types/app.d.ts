@@ -168,6 +168,8 @@ declare namespace App {
         email_verified_at: string | null;
         password_changed_at: string | null;
         last_active_at: string | null;
+        organiser?: Organiser;
+        country?: Country;
         created_at: string;
         updated_at: string;
     }

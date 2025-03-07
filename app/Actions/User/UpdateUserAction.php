@@ -9,11 +9,13 @@ class UpdateUserAction
 {
     public function execute(UpdateAccountRequest $request): User
     {
+        $validated = $request->validated();
+
         user()->update([
-            'email' => $request->input('email'),
-            'dob' => $request->input('dob'),
-            'timezone' => $request->input('timezone'),
-            'date_format' => $request->input('date_format'),
+            'country_id' => $validated['country'],
+            'email' => $validated['email'],
+            'timezone' => $validated['timezone'],
+            'date_format' => $validated['date_format'],
         ]);
 
         return user()->refresh();

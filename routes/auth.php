@@ -3,6 +3,9 @@
 use App\Http\Controllers\Account\AccountConnectionsController;
 use App\Http\Controllers\Account\AccountDetailController;
 use App\Http\Controllers\Account\AccountSecurityController;
+use App\Http\Controllers\Account\Organisation\OrganisationController;
+use App\Http\Controllers\Account\Organisation\OrganisationCreateController;
+use App\Http\Controllers\Account\Organisation\OrganisationJoinController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\DiscordAuthController;
@@ -82,5 +85,20 @@ Route::middleware('auth')->prefix('account')->name('account.')->controller(Accou
     Route::prefix('connections')->name('connections.')->controller(AccountConnectionsController::class)->group(function () {
         Route::get('', 'index')->name('index');
         Route::delete('', 'destroy')->name('destroy');
+    });
+
+    Route::prefix('organisation')->name('organisation.')->controller(OrganisationController::class)->group(function () {
+        Route::get('', 'index')->name('index');
+        Route::put('', 'update')->name('update');
+
+        Route::prefix('join')->name('join.')->controller(OrganisationJoinController::class)->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('', 'store')->name('store');
+        });
+
+        Route::prefix('create')->name('create.')->controller(OrganisationCreateController::class)->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('', 'store')->name('store');
+        });
     });
 });

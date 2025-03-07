@@ -37,7 +37,7 @@ function updatePassword() {
             </template>
           </Alert>
 
-          <form class="space-y-6">
+          <form class="space-y-6" @submit.prevent="updatePassword">
             <PasswordInput
               id="current_password"
               v-model="passwordForm.current_password"
@@ -78,7 +78,6 @@ function updatePassword() {
                 { 'opacity-25': passwordForm.processing },
               ]"
               :disabled="passwordForm.processing"
-              @click.prevent="updatePassword"
             >
               <IconLoading
                 v-if="passwordForm.processing"

@@ -56,7 +56,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'isImpersonating' => false,
             'isAdmin' => $request->user()?->hasRole('admin') ?? false,
-            'user' => $request->user() ? UserResource::make($request->user()->load('roles.permissions', 'country')) : null,
+            'user' => $request->user() ? UserResource::make($request->user()->load('roles.permissions', 'country', 'organiser')) : null,
         ];
     }
 }

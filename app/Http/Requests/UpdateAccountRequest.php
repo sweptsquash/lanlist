@@ -29,6 +29,7 @@ class UpdateAccountRequest extends FormRequest
     public function rules()
     {
         return [
+            'country' => ['required', 'integer', 'exists:countries,id'],
             'email' => ['required', 'email', Rule::unique('users')->ignore(user()->id)],
             'date_format' => ['nullable', 'string'],
             'timezone' => ['nullable', 'string'],
