@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Enums\NotificationType;
@@ -8,7 +10,7 @@ use Illuminate\Support\ServiceProvider;
 
 class InertiaServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         RedirectResponse::macro('flash', function (NotificationType $type, string $body) {
             session()->flash('notification', [

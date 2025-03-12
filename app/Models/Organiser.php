@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\OrganiserPublishedScope;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -43,7 +45,7 @@ class Organiser extends Model implements HasMedia
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
@@ -79,10 +81,10 @@ class Organiser extends Model implements HasMedia
         return $this->hasMany(OrganiserJoinRequest::class);
     }
 
-    public function scopeCountUpcomingEvents(Builder $query)
+    public function scopeCountUpcomingEvents(Builder $query): void
     {
         $query->withCount([
-            'events' => fn ($query) => $query->where('events.is_published', true)->upcoming(),
+            'events' => fn (Builder $query) => $query->where('events.is_published', true)->upcoming(),
         ]);
     }
 }

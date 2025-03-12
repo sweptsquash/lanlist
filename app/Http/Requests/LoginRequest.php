@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,17 +15,12 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'username' => filter_var($this->username, FILTER_VALIDATE_EMAIL) ? $this->username : str($this->username)->lower()->slug()->toString(),
@@ -31,10 +29,8 @@ class LoginRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'username' => ['required'],
@@ -45,11 +41,9 @@ class LoginRequest extends FormRequest
     /**
      * Attempt to authenticate the request's credentials.
      *
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
-    public function authenticate()
+    public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
@@ -57,7 +51,7 @@ class LoginRequest extends FormRequest
 
         if (! Auth::attempt([$fieldType => $this->username, ...$this->only('password')], $this->boolean('remember'))) {
             /** @var ?User $user */
-            $user = User::firstWhere(function ($query) use ($fieldType) {
+            $user = User::firstWhere(function (Builder $query) use ($fieldType) {
                 $query->where($fieldType, $this->username);
             });
 
@@ -82,11 +76,10 @@ class LoginRequest extends FormRequest
     /**
      * Ensure the login request is not rate limited.
      *
-     * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
-    public function ensureIsNotRateLimited()
+    public function ensureIsNotRateLimited(): void
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
@@ -106,10 +99,8 @@ class LoginRequest extends FormRequest
 
     /**
      * Get the rate limiting throttle key for the request.
-     *
-     * @return string
      */
-    public function throttleKey()
+    public function throttleKey(): string
     {
         return $this->username.'|'.$this->ip();
     }

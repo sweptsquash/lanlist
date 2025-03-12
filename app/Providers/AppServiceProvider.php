@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Listeners\UserEventSubscriber;
@@ -35,9 +37,10 @@ class AppServiceProvider extends ServiceProvider
                     ->mixedCase()
                     ->letters()
                     ->numbers();
-            } else {
-                return Password::min(8);
             }
+
+            return Password::min(8);
+
         });
 
         Authenticate::redirectUsing(function () {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +17,7 @@ class Country extends Model
         'prefix',
     ];
 
-    public static function findCode(Country|string $country): ?self
+    public static function findCode(self|string $country): ?self
     {
         if ($country instanceof static) {
             return $country;

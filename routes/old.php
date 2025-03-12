@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Event;
 use App\Models\Venue;
 use Illuminate\Http\Request;

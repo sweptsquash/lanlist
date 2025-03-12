@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'output' => [
         'routes' => resource_path('js/routes/routes.json'),

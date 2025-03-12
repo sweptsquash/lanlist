@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\User;
 
 use Illuminate\Bus\Queueable;
@@ -13,12 +15,12 @@ class PasswordResetNotification extends Notification implements ShouldQueue
 
     public function __construct(public string $token) {}
 
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
             ->subject('Password reset')

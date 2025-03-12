@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Spatie;
 
 use DateTimeInterface;
@@ -10,7 +12,7 @@ class UrlGenerator extends DefaultUrlGenerator
 {
     public function getUrl(): string
     {
-        if (config('filesystems.disks.media.driver') == 's3') {
+        if (config('filesystems.disks.media.driver') === 's3') {
             return $this->getDisk()->url($this->getPathRelativeToRoot());
         }
 
@@ -19,7 +21,7 @@ class UrlGenerator extends DefaultUrlGenerator
 
     public function getTemporaryUrl(DateTimeInterface $expiration, array $options = []): string
     {
-        if (config('filesystems.disks.media.driver') == 's3') {
+        if (config('filesystems.disks.media.driver') === 's3') {
             return $this->getDisk()->temporaryUrl($this->getPathRelativeToRoot(), $expiration, $options);
         }
 

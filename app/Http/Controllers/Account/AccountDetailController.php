@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Account;
 
 use App\Actions\User\UpdateUserAction;
@@ -17,7 +19,7 @@ class AccountDetailController extends FrontendController
         return inertia('Account/index', [
             'countries' => CountryResource::collection(Country::all()),
             'timezones' => collect(timezone_identifiers_list())
-                ->map(function ($timezone) {
+                ->map(function (string $timezone) {
                     return ['id' => $timezone, 'name' => $timezone];
                 }),
         ]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\FrontendController;
@@ -12,10 +14,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Inertia\Response;
 
 class RegisteredUserController extends FrontendController
 {
-    public function create()
+    public function create(): Response
     {
         return inertia('Auth/Register', [
             'countries' => CountryResource::collection(Country::all()),

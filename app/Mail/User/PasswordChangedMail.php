@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail\User;
 
 use App\Models\User;
@@ -25,10 +27,8 @@ class PasswordChangedMail extends Mailable
 
     /**
      * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
      */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Password Changed',
@@ -41,10 +41,8 @@ class PasswordChangedMail extends Mailable
 
     /**
      * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
      */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.user.password-changed',

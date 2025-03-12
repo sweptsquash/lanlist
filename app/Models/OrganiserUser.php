@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+/**
+ * @mixin IdeHelperOrganiserUser
+ */
 class OrganiserUser extends Pivot
 {
     protected $table = 'organiser_users';

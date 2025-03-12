@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
@@ -10,7 +13,7 @@ use Illuminate\Support\Collection;
  */
 class MediaResource extends JsonResource
 {
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         return [
             'uuid' => $this->uuid,
@@ -30,7 +33,7 @@ class MediaResource extends JsonResource
     {
         return $this->getGeneratedConversions()
             ->filter()
-            ->map(function ($value, $conversion) {
+            ->map(function (bool $value, string $conversion) {
                 return [
                     [
                         'name' => $conversion,

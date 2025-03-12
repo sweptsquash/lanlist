@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\User\Organisation;
 
 use App\Http\Requests\StoreOrganisationCreateRequest;

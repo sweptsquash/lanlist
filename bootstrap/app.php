@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -34,7 +36,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 return Inertia::render('Error', ['status' => $response->getStatusCode()])
                     ->toResponse($request)
                     ->setStatusCode($response->getStatusCode());
-            } elseif ($response->getStatusCode() === 419) {
+            }
+            if ($response->getStatusCode() === 419) {
                 return back()->with([
                     'message' => 'The page expired, please try again.',
                 ]);

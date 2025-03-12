@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 return [
-    'image' => [
-        'extension' => 'jpg',
-        'quality' => 100,
-        'width' => 1200,
-        'height' => 630,
-    ],
+    'extension' => 'jpg',
+    'quality' => 100,
+    'width' => 1200,
+    'height' => 630,
 
     // The cache location to use.
     'storage' => [

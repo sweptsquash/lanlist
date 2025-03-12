@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Account\Organisation;
 
 use App\Http\Controllers\FrontendController;

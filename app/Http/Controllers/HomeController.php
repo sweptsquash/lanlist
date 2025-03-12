@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Resources\EventResource;
 use App\Http\Resources\OrganiserResource;
 use App\Models\Event;
 use App\Models\Organiser;
+use Illuminate\Database\Eloquent\Collection;
 use Inertia\Response;
 
 class HomeController extends FrontendController
@@ -16,10 +19,10 @@ class HomeController extends FrontendController
             ->with(['venue', 'organiser.media'])
             ->limit(6)
             ->get()
-            ->groupBy(function ($event) {
+            ->groupBy(function (Event $event) {
                 return $event->start_date->format('n');
             })
-            ->map(function ($events) {
+            ->map(function (Collection $events) {
                 return $events->map(fn (Event $event) => EventResource::make($event));
             })
             ->take(3)

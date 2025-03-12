@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Resources\CountryResource;
@@ -7,6 +9,7 @@ use App\Http\Resources\VenueResource;
 use App\Models\Country;
 use App\Models\Venue;
 use App\Spatie\Filter\FiltersVenueCountry;
+use Illuminate\Database\Eloquent\Builder;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -34,8 +37,8 @@ class VenueController extends FrontendController
     public function show(Venue $venue): Response
     {
         $venue
-            ->load(['events' => fn ($query) => $query->with('organiser')->upcoming()->limit(10)])
-            ->loadCount(['events' => fn ($query) => $query->upcoming()]);
+            ->load(['events' => fn (Builder $query) => $query->with('organiser')->upcoming()->limit(10)])
+            ->loadCount(['events' => fn (Builder $query) => $query->upcoming()]);
 
         return inertia('Venues/show', [
             'venue' => VenueResource::make($venue),

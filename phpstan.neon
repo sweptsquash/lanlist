@@ -9,6 +9,8 @@ parameters:
 
     # Level 10 is the highest level
     level: 5
+    
+    checkModelProperties: true
 
     scanFiles:
       - _ide_helper_models.php

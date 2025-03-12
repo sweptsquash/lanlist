@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\User;
 
 use App\Mail\User\PasswordChangedMail;
@@ -14,12 +16,12 @@ class PasswordChangedNotification extends Notification implements ShouldQueue
 
     public function __construct(public string $ip) {}
 
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): Mailable
+    public function toMail(object $notifiable): Mailable
     {
         return (new PasswordChangedMail($this->ip, $notifiable))->to($notifiable->email);
     }
