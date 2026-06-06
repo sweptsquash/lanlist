@@ -1,10 +1,9 @@
 {
     "mcpServers": {
         "laravel-boost": {
-            "command": "wsl.exe",
+            "command": "vendor/bin/sail",
             "args": [
-                "/home/linuxbrew/.linuxbrew/Cellar/php/8.5.6/bin/php",
-                "/home/swept/projects/lanlist/artisan",
+                "artisan",
                 "boost:mcp"
             ]
         }
