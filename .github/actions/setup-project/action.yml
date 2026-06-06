@@ -1,0 +1,8 @@
+name: Setup Project
+description: Setup project for testing
+runs:
+  using: 'composite'
+  steps:
+    - name: Copy .env.ci.example to .env
+      shell: bash
+      run: cp .env.ci.example .env

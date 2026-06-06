@@ -1,0 +1,13 @@
+name: Migrate & Generate IDE Helpers for PHPStan Mixins
+description: Migrate & Generate IDE Helpers for PHPStan Mixins
+runs:
+  using: 'composite'
+  steps:
+    - name: Migrate
+      shell: bash
+      run: php artisan migrate
+
+    - name: Generate IDE Helpers
+      shell: bash
+      run: |
+        composer ide-helper

@@ -1,0 +1,70 @@
+name: Tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/workflows/test.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/workflows/test.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: >-
+          --entrypoint redis-server
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-php
+
+      - uses: ./.github/actions/setup-project
+
+      - uses: ./.github/actions/setup-composer
+
+      - uses: ./.github/actions/setup-migrations
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Build Packages
+        run: |
+          npm --prefix=packages/vite-plugin-watch ci
+          npm --prefix=packages/lararail ci
+          npm run prepare
+
+      - name: Install Node Dependencies
+        run: npm ci
+
+      - name: Build Frontend
+        run: npm run build:ssr
+
+      - name: Run Unit Tests
+        run: composer test:unit

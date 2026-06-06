@@ -1,0 +1,42 @@
+name: PHPStan
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "phpstan.neon"
+      - ".github/workflows/phpstan.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "phpstan.neon"
+      - ".github/workflows/phpstan.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-php
+
+      - uses: ./.github/actions/setup-project
+
+      - uses: ./.github/actions/setup-composer
+
+      - uses: ./.github/actions/setup-migrations
+
+      - name: Run phpstan
+        run: composer test:types
