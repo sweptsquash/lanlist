@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Teams;
 
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -35,7 +37,7 @@ class DeleteTeamRequest extends FormRequest
     public function after(): array
     {
         return [
-            function (Validator $validator) {
+            function (Validator $validator): void {
                 $team = $this->route('team');
 
                 if ($this->input('name') !== $team->name) {

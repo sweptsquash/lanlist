@@ -1,0 +1,25 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    level: 5
+
+    checkOctaneCompatibility: false
+    checkModelProperties: true
+
+    ignoreErrors:
+        -
+            message: '#Undefined variable: \$this#'
+            path: routes/console.php
+            reportUnmatched: false
+        -
+            message: '#Unsafe usage of new static\(\).#'
+            reportUnmatched: false
+        -
+            message: '#Access to an undefined property Laravel\\Socialite\\AbstractUser::\$[token|refreshToken]#'
+            reportUnmatched: false

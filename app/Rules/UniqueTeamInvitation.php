@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\Team;
@@ -22,7 +24,7 @@ class UniqueTeamInvitation implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $email = strtolower($value);
+        $email = strtolower((string) $value);
 
         $isMember = $this->team->members()
             ->whereRaw('LOWER(email) = ?', [$email])
@@ -34,10 +36,10 @@ class UniqueTeamInvitation implements ValidationRule
             return;
         }
 
-        $hasPendingInvitation = TeamInvitation::where('team_id', $this->team->id)
+        $hasPendingInvitation = TeamInvitation::query()->where('team_id', $this->team->id)
             ->whereRaw('LOWER(email) = ?', [$email])
             ->whereNull('accepted_at')
-            ->where(function ($query) {
+            ->where(function ($query): void {
                 $query->whereNull('expires_at')
                     ->orWhere('expires_at', '>', now());
             })

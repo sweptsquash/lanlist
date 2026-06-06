@@ -1,6 +1,6 @@
 /.phpunit.cache
 /bootstrap/ssr
-/node_modules
+**/node_modules
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot
@@ -28,3 +28,8 @@ yarn-error.log
 /.vscode
 /.zed
 /old
+packages/**/dist
+.rnd
+**/caddy
+**/composer
+**/psysh

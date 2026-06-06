@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\TeamRole;
+use Carbon\CarbonImmutable;
 use Database\Factories\TeamInvitationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +13,37 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
+/**
+ * @property int $id
+ * @property string $code
+ * @property int $team_id
+ * @property string $email
+ * @property TeamRole $role
+ * @property int $invited_by
+ * @property CarbonImmutable|null $expires_at
+ * @property CarbonImmutable|null $accepted_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read User $inviter
+ * @property-read Team|null $team
+ *
+ * @method static \Database\Factories\TeamInvitationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereAcceptedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereInvitedBy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereTeamId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamInvitation whereUpdatedAt($value)
+ *
+ * @mixin Model
+ */
 #[Fillable(['team_id', 'email', 'role', 'invited_by', 'expires_at', 'accepted_at'])]
 class TeamInvitation extends Model
 {
@@ -23,7 +57,7 @@ class TeamInvitation extends Model
     {
         parent::boot();
 
-        static::creating(function (TeamInvitation $invitation) {
+        static::creating(function (TeamInvitation $invitation): void {
             if (empty($invitation->code)) {
                 $invitation->code = Str::random(64);
             }

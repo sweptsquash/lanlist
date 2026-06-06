@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+class {{ class }}Action
+{
+    public function execute(): void
+    {
+        // TODO: Implement action logic and update return type
+    }
+}

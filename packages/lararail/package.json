@@ -1,0 +1,57 @@
+{
+    "name": "lararail",
+    "version": "0.2.0",
+    "description": "Fully typed frontend route helper for Laravel apps",
+    "keywords": [
+        "authorization",
+        "inertia",
+        "laravel",
+        "permissions",
+        "vue"
+    ],
+    "files": [
+        "dist"
+    ],
+    "type": "module",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "scripts": {
+        "build": "npm run lint && tsup",
+        "typecheck": "tsc --noEmit",
+        "lint": "oxlint --fix && oxfmt --write src/",
+        "test:lint": "oxlint  && oxfmt --check src/",
+        "patch": "npm version patch --no-git-tag-version",
+        "minor": "npm version minor --no-git-tag-version"
+    },
+    "engines": {
+        "node": "^22.14.0 || >=24.0.0"
+    },
+    "dependencies": {
+        "ziggy-js": "^2.6.2"
+    },
+    "devDependencies": {
+        "@types/node": "^25.5.0",
+        "oxfmt": "^0.52.0",
+        "oxlint": "^1.67.0",
+        "oxlint-tsgolint": "^0.23.0",
+        "tsup": "^8.5.1",
+        "typescript": "^6.0.3",
+        "vite": "^8.0.14",
+        "vue": "^3.5.35"
+    },
+    "peerDependencies": {
+        "vite": ">=8.0.0",
+        "vue": "^3.x"
+    },
+    "allowScripts": {
+        "esbuild@0.27.7": true
+    }
+}

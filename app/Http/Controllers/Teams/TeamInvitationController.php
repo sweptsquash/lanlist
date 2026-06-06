@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Teams;
 
 use App\Enums\TeamRole;
@@ -62,7 +64,7 @@ class TeamInvitationController extends Controller
     {
         $user = $request->user();
 
-        DB::transaction(function () use ($user, $invitation) {
+        DB::transaction(function () use ($user, $invitation): void {
             $team = $invitation->team;
 
             $team->memberships()->firstOrCreate(
