@@ -25,18 +25,7 @@ class TeamFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'is_personal' => false,
         ];
-    }
-
-    /**
-     * Indicate that the team is a personal team.
-     */
-    public function personal(): static
-    {
-        return $this->state(fn (array $attributes): array => [
-            'is_personal' => true,
-        ]);
     }
 
     /**
