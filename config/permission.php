@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Spatie\Permission\DefaultTeamResolver;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -31,6 +32,19 @@ return [
 
         'role' => Role::class,
 
+        /*
+         * When using the "Teams" feature from this package, we need to know which
+         * Eloquent model should be used to retrieve your teams. Of course, it
+         * is often just the "Team" model but you may use whatever you like.
+         */
+        'team' => null,
+
+        /*
+         * When using the "HasModels" trait and passing raw IDs to syncModels,
+         * attachModels, or detachModels, this model class will be used to
+         * resolve those IDs. If null, defaults to the guard's model.
+         */
+        'default_model' => null,
     ],
 
     'table_names' => [
@@ -116,6 +130,17 @@ return [
     'register_octane_reset_listener' => false,
 
     /*
+     * Events will fire when a role or permission is assigned/unassigned:
+     * \Spatie\Permission\Events\RoleAttachedEvent
+     * \Spatie\Permission\Events\RoleDetachedEvent
+     * \Spatie\Permission\Events\PermissionAttachedEvent
+     * \Spatie\Permission\Events\PermissionDetachedEvent
+     *
+     * To enable, set to true, and then create listeners to watch these events.
+     */
+    'events_enabled' => false,
+
+    /*
      * Teams Feature.
      * When set to true the package implements teams using the 'team_foreign_key'.
      * If you want the migrations to register the 'team_foreign_key', you must
@@ -126,6 +151,11 @@ return [
      */
 
     'teams' => false,
+
+    /*
+     * The class to use to resolve the permissions team id
+     */
+    'team_resolver' => DefaultTeamResolver::class,
 
     /*
      * Passport Client Credentials Grant
@@ -161,7 +191,7 @@ return [
      * The class to use for interpreting wildcard permissions.
      * If you need to modify delimiters, override the class and specify its name here.
      */
-    // 'permission.wildcard_permission' => Spatie\Permission\WildcardPermission::class,
+    // 'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
 
     /* Cache-specific settings */
 
@@ -187,30 +217,5 @@ return [
          */
 
         'store' => 'default',
-    ],
-
-    'roles' => [
-        'platform' => [
-            'admin' => 'RentLynk Admin',
-            'billing' => 'RentLynk Billing',
-            'support' => 'RentLynk Support',
-        ],
-
-        'landlord' => [
-            'admin' => 'Admin',
-            'billing' => 'Billing',
-            'portfolio_manager' => 'Portfolio Manager',
-            'maintenance' => 'Maintenance',
-            'user' => 'User',
-        ],
-
-        'contractor' => [
-            'admin' => 'Admin',
-            'contractor' => 'Contractor',
-        ],
-
-        'tenant' => [
-            'tenant' => 'Tenant',
-        ],
     ],
 ];
