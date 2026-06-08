@@ -30,13 +30,13 @@ setup:
 	make sail_up
 	make build_spa
 	make create_bucket
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan key:generate
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan key:generate
 	make db_reset
 	make ide_helper
 	make setup_ssl_hosts
 
 create_bucket:
-	docker compose -f compose.yaml exec --user=root minio bash -c " \
+	docker compose -f compose.yml exec --user=root minio bash -c " \
 		echo URL: ${AWS_ENDPOINT}; \
 		echo Credentials: ${AWS_ACCESS_KEY_ID}:${AWS_SECRET_ACCESS_KEY}; \
 		/usr/bin/mc alias set s3 ${AWS_ENDPOINT} ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY}; \
@@ -45,10 +45,10 @@ create_bucket:
 	"
 
 shell:
-	docker compose -f compose.yaml exec --user=root lanlist_app bash
+	docker compose -f compose.yml exec --user=root lanlist_app bash
 
 shell_db:
-	docker compose -f compose.yaml exec --user=root mysql bash
+	docker compose -f compose.yml exec --user=root mysql bash
 
 sail_build:
 	@echo "Building Sail containers..."
@@ -72,50 +72,50 @@ composer_install:
 
 clear_cache:
 	@echo "Clearing Composer cache..."
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan optimize:clear
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan config:cache
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan route:cache
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan optimize:clear
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan config:cache
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan route:cache
 
 composer_update:
 	@echo "Updating Composer dependencies..."
-	docker compose -f compose.yaml exec lanlist_app chown -R 33:33 /composer/cache
-	docker compose -f compose.yaml exec --user=sail lanlist_app composer update --prefer-dist --no-interaction --optimize-autoloader
-	docker compose -f compose.yaml exec --user=sail lanlist_app composer bump
+	docker compose -f compose.yml exec lanlist_app chown -R 33:33 /composer/cache
+	docker compose -f compose.yml exec --user=sail lanlist_app composer update --prefer-dist --no-interaction --optimize-autoloader
+	docker compose -f compose.yml exec --user=sail lanlist_app composer bump
 
 db_reset:
 	@echo "Resetting the database..."
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan migrate:fresh --seed
-	docker compose -f compose.yaml exec --user=sail lanlist_app composer doc:models
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan migrate:fresh --seed
+	docker compose -f compose.yml exec --user=sail lanlist_app composer doc:models
 	@echo "Database reset complete."
 
 ide_helper:
 	@echo "Generating IDE helper files..."
-	docker compose -f compose.yaml exec --user=sail lanlist_app composer ide-helper
-	docker compose -f compose.yaml exec --user=sail lanlist_app composer doc:models
+	docker compose -f compose.yml exec --user=sail lanlist_app composer ide-helper
+	docker compose -f compose.yml exec --user=sail lanlist_app composer doc:models
 
 setup_ssl_hosts:
 	@echo "Setting up SSL & Hosts..."
 	./scripts/setup.sh
 
 build_spa:
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm --prefix=packages/lararail ci
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm --prefix=packages/vite-plugin-watch ci
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm run prepare
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm ci
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm run routes
-	docker compose -f compose.yaml exec --user=sail lanlist_app npm run build:ssr
+	docker compose -f compose.yml exec --user=sail lanlist_app npm --prefix=packages/lararail ci
+	docker compose -f compose.yml exec --user=sail lanlist_app npm --prefix=packages/vite-plugin-watch ci
+	docker compose -f compose.yml exec --user=sail lanlist_app npm run prepare
+	docker compose -f compose.yml exec --user=sail lanlist_app npm ci
+	docker compose -f compose.yml exec --user=sail lanlist_app npm run routes
+	docker compose -f compose.yml exec --user=sail lanlist_app npm run build:ssr
 
 serve_spa:
 	@echo "Starting SPA..."
 	@echo "Note: Queue and Reverb are managed by Supervisor"
 	npm run build:ssr
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan inertia:stop-ssr 2> /dev/null
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan inertia:stop-ssr 2> /dev/null
 	npm run dev
 
 reverb_start:
 	@echo "Starting Reverb..."
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan reverb:start --debug --no-interaction --port=8080 --host=0.0.0.0
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan reverb:start --debug --no-interaction --port=8080 --host=0.0.0.0
 
 reverb_restart:
 	@echo "Restarting Reverb..."
-	docker compose -f compose.yaml exec --user=sail lanlist_app php artisan reverb:restart
+	docker compose -f compose.yml exec --user=sail lanlist_app php artisan reverb:restart
