@@ -6,12 +6,12 @@ namespace App\Concerns;
 
 use Illuminate\Support\Str;
 
-trait GeneratesUniqueTeamSlugs
+trait GeneratesUniqueOrganisationSlugs
 {
     /**
-     * Generate a unique slug for the team.
+     * Generate a unique slug for the organisation.
      */
-    protected static function generateUniqueTeamSlug(string $name, ?int $excludeId = null): string
+    protected static function generateUniqueOrganisationSlug(string $name, ?int $excludeId = null): string
     {
         $defaultSlug = Str::slug($name);
 
