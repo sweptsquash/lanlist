@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Team;
+use App\Models\Organisation;
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-/**
- * @extends Factory<Team>
- */
-class TeamFactory extends Factory
+#[UseModel(Organisation::class)]
+class OrganisationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -29,7 +28,7 @@ class TeamFactory extends Factory
     }
 
     /**
-     * Indicate that the team has been deleted.
+     * Indicate that the organisation has been deleted.
      */
     public function trashed(): static
     {

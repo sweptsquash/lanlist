@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->foreignId('event_id')->constrained('events');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('creator_id')->constrained('users');
             $table->tinyInteger('rating_venue')->nullable();
             $table->tinyInteger('rating_vfm')->nullable();
             $table->tinyInteger('rating_activities')->nullable();

@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table): void {
             $table->id();
             $table->uuid()->unique();
+            $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->foreignId('creator_id')->nullable()->constrained('users');
             $table->string('name');
             $table->string('url')->nullable();
             $table->longText('description')->nullable();
-            $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->unsignedInteger('order_id')->nullable();
             $table->timestamps();
         });

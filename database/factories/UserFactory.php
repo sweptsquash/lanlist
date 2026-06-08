@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\TeamRole;
-use App\Models\Team;
+use App\Enums\OrganisationRole;
+use App\Models\Organisation;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
-/**
- * @extends Factory<User>
- */
+#[UseModel(User::class)]
 class UserFactory extends Factory
 {
     /**
@@ -45,16 +45,14 @@ class UserFactory extends Factory
      */
     public function configure(): static
     {
-        return $this->afterCreating(function ($user): void {
-            $team = Team::factory()->personal()->create([
+        return $this->afterCreating(function (User $user): void {
+            $organisation = Organisation::factory()->create([
                 'name' => $user->username."'s Team",
             ]);
 
-            $team->members()->attach($user, [
-                'role' => TeamRole::Owner->value,
+            $organisation->members()->attach($user, [
+                'role_id' => Role::query()->where('name', OrganisationRole::Owner->value)->where('team_id', $organisation->id)->first()->id,
             ]);
-
-            $user->switchTeam($team);
         });
     }
 
