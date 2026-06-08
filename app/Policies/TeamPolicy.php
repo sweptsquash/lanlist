@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\TeamPermission;
+use App\Enums\OrganisationPermission;
 use App\Models\Team;
 use App\Models\User;
 
@@ -39,7 +39,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::UpdateTeam);
+        return $user->hasTeamPermission($team, OrganisationPermission::UpdateTeam);
     }
 
     /**
@@ -47,7 +47,7 @@ class TeamPolicy
      */
     public function addMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::AddMember);
+        return $user->hasTeamPermission($team, OrganisationPermission::AddMember);
     }
 
     /**
@@ -55,7 +55,7 @@ class TeamPolicy
      */
     public function updateMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::UpdateMember);
+        return $user->hasTeamPermission($team, OrganisationPermission::UpdateMember);
     }
 
     /**
@@ -63,7 +63,7 @@ class TeamPolicy
      */
     public function removeMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::RemoveMember);
+        return $user->hasTeamPermission($team, OrganisationPermission::RemoveMember);
     }
 
     /**
@@ -71,7 +71,7 @@ class TeamPolicy
      */
     public function inviteMember(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::CreateInvitation);
+        return $user->hasTeamPermission($team, OrganisationPermission::CreateInvitation);
     }
 
     /**
@@ -79,7 +79,7 @@ class TeamPolicy
      */
     public function cancelInvitation(User $user, Team $team): bool
     {
-        return $user->hasTeamPermission($team, TeamPermission::CancelInvitation);
+        return $user->hasTeamPermission($team, OrganisationPermission::CancelInvitation);
     }
 
     /**
@@ -87,6 +87,6 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team): bool
     {
-        return ! $team->is_personal && $user->hasTeamPermission($team, TeamPermission::DeleteTeam);
+        return ! $team->is_personal && $user->hasTeamPermission($team, OrganisationPermission::DeleteTeam);
     }
 }

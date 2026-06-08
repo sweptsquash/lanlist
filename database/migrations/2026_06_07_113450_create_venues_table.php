@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('creator_id')->nullable()->constrained('users');
             $table->string('title');
             $table->string('slug')->unique();
             $table->double('lat')->nullable()->comment('The latitiude of the postcode');
