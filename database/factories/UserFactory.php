@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\OrganisationRole;
-use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Attributes\UseModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 #[UseModel(User::class)]
 class UserFactory extends Factory
@@ -38,22 +35,6 @@ class UserFactory extends Factory
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
         ];
-    }
-
-    /**
-     * Configure the model factory.
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (User $user): void {
-            $organisation = Organisation::factory()->create([
-                'name' => $user->username."'s Team",
-            ]);
-
-            $organisation->members()->attach($user, [
-                'role_id' => Role::query()->where('name', OrganisationRole::Owner->value)->where('team_id', $organisation->id)->first()->id,
-            ]);
-        });
     }
 
     /**

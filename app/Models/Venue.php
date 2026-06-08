@@ -29,7 +29,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property CarbonImmutable|null $updated_at
  * @property-read Country|null $country
  * @property-read User|null $creator
- * @property-read Collection<int, \Illuminate\Support\Facades\Event> $events
+ * @property-read Collection<int, Event> $events
  * @property-read int|null $events_count
  *
  * @method static Builder<static>|Venue countUpcomingEvents()

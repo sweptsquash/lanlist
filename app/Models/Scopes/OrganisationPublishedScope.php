@@ -15,6 +15,6 @@ class OrganisationPublishedScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('organisation.is_published', true);
+        $builder->where('organisations.is_published', true);
     }
 }

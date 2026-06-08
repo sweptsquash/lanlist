@@ -21,7 +21,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $uuid
  * @property int $organisation_id
  * @property int $user_id
- * @property int $role_id
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read Organisation|null $organisation
@@ -42,7 +41,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereOrganisationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Membership whereUuid($value)
@@ -56,7 +54,6 @@ use Spatie\Permission\Traits\HasRoles;
     'uuid',
     'organisation_id',
     'user_id',
-    'role_id',
 ])]
 #[Table(name: 'organisation_members')]
 class Membership extends Pivot

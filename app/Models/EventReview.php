@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read User $creator
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventReview newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|EventReview newQuery()
