@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum TeamPermission: string
+enum OrganisationPermission: string
 {
     case UpdateTeam = 'team:update';
     case DeleteTeam = 'team:delete';
