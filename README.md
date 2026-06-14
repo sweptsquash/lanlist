@@ -13,6 +13,8 @@ A free and open list of LAN parties. It's provided purely for the benefit of the
 
 ### Setup Guide
 
+*Note*: If you are using Windows, you will need to run the setup commands from WSL2, not PowerShell or CMD. The Makefile is designed to work in a Linux-like environment. Please also take note of the SSL & local domains section below for Windows users.
+
 Use the Makefile for a consistent, repeatable setup:
 
 ```bash
