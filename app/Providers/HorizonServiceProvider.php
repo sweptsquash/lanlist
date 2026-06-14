@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Enums\OrganisationRole;
+use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
@@ -29,6 +31,17 @@ final class HorizonServiceProvider extends HorizonApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewHorizon', fn (?User $user = null): bool => $user?->is_platform_team === true);
+        Gate::define('viewHorizon', function (?User $user = null): bool {
+            $lanListOrganisation = cache(
+                'lanListOrganisationId',
+                Organisation::query()->firstWhere('name', 'LanList')?->id,
+            );
+
+            if ($user->organisations()->where('organisations.id', $lanListOrganisation)->exists()) {
+                return $user->hasRole(OrganisationRole::Owner);
+            }
+
+            return false;
+        });
     }
 }

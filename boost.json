@@ -1,5 +1,8 @@
 {
-    "agents": ["cursor", "copilot"],
+    "agents": [
+        "cursor",
+        "copilot"
+    ],
     "cloud": false,
     "guidelines": true,
     "mcp": true,

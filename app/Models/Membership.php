@@ -81,7 +81,7 @@ class Membership extends Pivot
     /**
      * Get the user that belongs to this membership.
      *
-     * @return BelongsTo<Model, $this>
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

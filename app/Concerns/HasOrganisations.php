@@ -69,7 +69,7 @@ trait HasOrganisations
      */
     public function ownsOrganisation(Organisation $organisation): bool
     {
-        return $this->organisationRole($organisation) === OrganisationRole::Owner;
+        return $this->organisationRole($organisation)?->name === OrganisationRole::Owner->value;
     }
 
     /**
@@ -80,6 +80,9 @@ trait HasOrganisations
         /** @var ?Membership $membership */
         $membership = $this->organisationMemberships()->where('organisation_id', $organisation->id)->first();
 
-        return $membership?->role;
+        /** @var ?Role $role */
+        $role = $membership?->roles()?->first();
+
+        return $role;
     }
 }

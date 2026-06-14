@@ -8,6 +8,7 @@ use App\Concerns\HasCreator;
 use App\Concerns\HasUuids;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -86,7 +87,7 @@ class Venue extends Model
             ->saveSlugsTo('slug');
     }
 
-    /** @return HasMany<\Illuminate\Support\Facades\Event, $this> */
+    /** @return HasMany<Event, $this> */
     public function events(): HasMany
     {
         return $this->hasMany(Event::class);
@@ -98,10 +99,11 @@ class Venue extends Model
         return $this->belongsTo(Country::class);
     }
 
-    protected function scopeCountUpcomingEvents(Builder $query): void
+    #[Scope]
+    protected function countUpcomingEvents(Builder $query): void
     {
         $query->withCount([
-            'events' => fn (Builder $query) => $query->where('events.is_published', true)->upcoming(),
+            'events' => fn ($query) => $query->where('events.is_published', true)->upcoming(),
         ]);
     }
 }

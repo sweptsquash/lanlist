@@ -142,7 +142,7 @@ class Organisation extends Model
     /**
      * Get all members of this organisation.
      *
-     * @return BelongsToMany<Model, $this>
+     * @return BelongsToMany<User, $this, Membership, 'pivot'>
      */
     public function members(): BelongsToMany
     {

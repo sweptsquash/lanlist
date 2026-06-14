@@ -71,11 +71,15 @@ class TestingSeeder extends Seeder
             ];
 
             foreach ($users as $user) {
-                $orgQuery = Organisation::query()->where('name', $user['organisation']['name']);
+                $orgQuery = Organisation::query()
+                    ->where('slug', str($user['organisation']['name'])->slug())
+                    ->withoutGlobalScopes();
 
                 if ($orgQuery->doesntExist()) {
                     $organisation = Organisation::factory()->create([
                         'name' => $user['organisation']['name'],
+                        'slug' => str($user['organisation']['name'])->slug(),
+                        'is_published' => true,
                     ]);
                 } else {
                     $organisation = $orgQuery->first();
