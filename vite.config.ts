@@ -18,10 +18,10 @@ export default defineConfig(({ command, mode }) => {
             host: "lanlist.dev",
             https: {
                 key: fs.readFileSync(
-                    "./data/caddy/certificates/local/lanlist.dev/lanlist.dev.key",
+                    "./caddy/data/caddy/certificates/local/lanlist.dev/lanlist.dev.key",
                 ),
                 cert: fs.readFileSync(
-                    "./data/caddy/certificates/local/lanlist.dev/lanlist.dev.crt",
+                    "./caddy/data/caddy/certificates/local/lanlist.dev/lanlist.dev.crt",
                 ),
             },
         };

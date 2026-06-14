@@ -6,7 +6,7 @@ trap 'echo "Script interrupted. Exiting."; exit 1' INT TERM
 # Variables
 HOSTS_FILE="/etc/hosts"
 CERT_PATH="$(pwd)/caddy/data/caddy/pki/authorities/local/root.crt"
-DOMAINS=("lanlist.dev" "app.lanlist.dev" "landlord-a.lanlist.dev" "landlord-b.lanlist.dev" "api.lanlist.dev" "ws.lanlist.dev" )
+DOMAINS=("lanlist.dev" "ws.lanlist.dev" )
 
 # Add domains to /etc/hosts if not present
 for DOMAIN in "${DOMAINS[@]}"; do
@@ -31,8 +31,8 @@ if [ ! -f "$CERT_PATH" ]; then
 fi
 
 echo "Adding certificate to Docker App Container..."
-docker compose -f compose.yaml exec --user=root lanlist_app cp /var/www/html/caddy/data/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/
-docker compose -f compose.yaml exec --user=root lanlist_app update-ca-certificates
+docker compose -f compose.yml exec --user=root lanlist_app cp /var/www/html/caddy/data/caddy/pki/authorities/local/root.crt /usr/local/share/ca-certificates/
+docker compose -f compose.yml exec --user=root lanlist_app update-ca-certificates
 echo "Certificate added to Docker App Container successfully."
 
 # Add the certificate to the System keychain
