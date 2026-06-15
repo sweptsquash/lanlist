@@ -7,7 +7,7 @@ import { renderToString } from 'vue/server-renderer'
 import Layout from '@/layouts/Default.vue'
 import routes from '@/routes/routes.json'
 
-const appName = import.meta.env.VITE_APP_NAME || 'RentLynk'
+const appName = import.meta.env.VITE_APP_NAME || 'LanList'
 
 createServer(
     (page) =>

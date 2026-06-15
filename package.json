@@ -17,8 +17,6 @@
         "build": "npm run routes && vite build",
         "build:ssr": "npm run routes && vite build && vite build --ssr",
         "dev": "vite",
-        "dev:landlord-a": "VITE_DEV_HOST=landlord-a.rentlynk.dev vite",
-        "dev:landlord-b": "VITE_DEV_HOST=landlord-b.rentlynk.dev vite",
         "lint": "oxlint resources/ --type-aware --fix && oxfmt --write resources/",
         "test:lint": "oxlint resources/ --type-aware && oxfmt --check resources/",
         "test:types": "tsc --noEmit",

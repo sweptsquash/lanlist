@@ -14,7 +14,7 @@ configureEcho({
     broadcaster: 'reverb',
 })
 
-const appName = import.meta.env.VITE_APP_NAME || 'RentLynk'
+const appName = import.meta.env.VITE_APP_NAME || 'LanList'
 
 await createInertiaApp({
     progress: {

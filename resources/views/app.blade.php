@@ -26,12 +26,12 @@
         }
 
         html.dark {
-            background-color: hsl(0 0% 16.08%);
+            background-color: #313338;
         }
     </style>
 
-    <title data-inertia="title">{{ config('app.name', 'RentLynk') }}</title>
-    <meta name="apple-mobile-web-app-title" content="RentLynk" />
+    <title data-inertia="title">{{ config('app.name', 'LanList') }}</title>
+    <meta name="apple-mobile-web-app-title" content="LanList" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -53,7 +53,8 @@
     @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
     @inertiaHead
 </head>
+
 <body class="font-sans antialiased">
-@inertia
+    @inertia
 </body>
 </html>
