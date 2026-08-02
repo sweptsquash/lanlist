@@ -65,13 +65,13 @@ When developing via WSL2, browsers on Windows use the Windows trust store, not W
 
 Option A: GUI
 
-- Open File Explorer to the project path from Windows: `\\wsl.testhost\Ubuntu-24.04\home\[USERNAME]\projects\RentLynk\data\caddy\pki\authorities\local\root.crt`
+- Open File Explorer to the project path from Windows: `\\wsl.testhost\Ubuntu-24.04\home\[USERNAME]\projects\lanlist\data\caddy\pki\authorities\local\root.crt`
 - Double‑click `root.crt` → Install Certificate → Local Machine → Trusted Root Certification Authorities
 
 Option B: PowerShell (Run as Administrator)
 
 ```powershell
-certutil -addstore -f "Root" "\\wsl.testhost\Ubuntu-24.04\home\[USERNAME]\projects\RentLynk\data\caddy\pki\authorities\local\root.crt"
+certutil -addstore -f "Root" "\\wsl.testhost\Ubuntu-24.04\home\[USERNAME]\projects\lanlist\data\caddy\pki\authorities\local\root.crt"
 ```
 
 If you access the app from Windows browsers, ensure the certificate is trusted in Windows. The Linux/WSL trust is handled by `make setup`.

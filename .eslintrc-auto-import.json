@@ -302,6 +302,7 @@
     "useToString": true,
     "useToast": true,
     "useToggle": true,
+    "useTour": true,
     "useTransition": true,
     "useTwoFactorAuth": true,
     "useUrlSearchParams": true,
